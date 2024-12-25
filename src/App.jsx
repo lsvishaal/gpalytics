@@ -1,6 +1,5 @@
 import React from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import SignIn from "./components/ui/Signin"
 import LandingPage from "./pages/Landing"
 import Navbar from "./components/ui/Navbar"
 import AuthPage from "./components/ui/Registration"
@@ -13,7 +12,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<AuthPage />} />
-          <Route path="/login" element={<SignIn />} />
         </Routes>
       </Router>
     </div>
