@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/Landing";
 import Navbar from "./components/ui/Navbar";
-import AuthPage from "./components/ui/Registration";
+import AuthPage from "./pages/AuthPage";
+import Error404 from "./pages/error404";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<AuthPage />} />
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </Router>
     </div>

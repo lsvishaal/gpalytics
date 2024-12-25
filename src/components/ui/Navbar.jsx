@@ -1,27 +1,42 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  // Simulate fetching user data from authentication or database
+  // Fetch user details dynamically
   useEffect(() => {
     const fetchUserData = async () => {
-      // Replace this mock data with an actual API/database call
-      const mockUser = {
-        userId: "user123",
-        name: "John Doe",
-        profilePicture:
-          "https://i.pravatar.cc/150?img=5", // Random profile picture generator (e.g., i.pravatar.cc)
-      };
-      setUser(mockUser);
+      try {
+        const response = await axios.get("http://localhost:8000/protected/get-details", {
+          withCredentials: true,
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.log("Error fetching user data:", error);
+        setUser(null);
+      }
     };
 
     fetchUserData();
   }, []);
 
+  // Logout functionality
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:8000/logout", {}, { withCredentials: true });
+      setUser(null);
+      navigate("/");
+    } catch (error) {
+      console.log("Error logging out:", error);
+    }
+  };
+
   return (
     <nav className="flex justify-between items-center bg-neutral text-base-content px-6 py-4 shadow-md">
-      {/* Logo and Title */}
+      {/* Logo */}
       <a href="/" className="text-xl font-bold flex items-center">
         <span className="mr-2">
           <svg
@@ -42,76 +57,46 @@ const Navbar = () => {
         <span className="text-primary">GPA</span>lytics
       </a>
 
-      {/* Navigation Links */}
+      {/* Links */}
       <div className="hidden md:flex space-x-8">
-        <a href="/" className="hover:text-primary">
-          Home
-        </a>
-        <a href="/register" className="hover:text-primary">
-          RegisterAuthPage
-        </a>
-        <a href="/#community" className="hover:text-primary">
-          Community
-        </a>
-        <a href="/#about" className="hover:text-primary">
-          About
-        </a>
+        <a href="/" className="hover:text-primary">Home</a>
+        <a href="/register" className="hover:text-primary">Register</a>
+        <a href="/#community" className="hover:text-primary">Community</a>
+        <a href="/#about" className="hover:text-primary">About</a>
       </div>
 
-      {/* Right-hand Widgets */}
+      {/* Profile and Logout */}
       <div className="flex items-center space-x-4">
-        {/* Theme Toggle */}
-        <button className="btn btn-ghost btn-sm">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 3v18m9-9H3"
-            />
-          </svg>
-        </button>
-
-        {/* User Profile Dropdown */}
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              {user && (
-                <img
-                  alt={`${user.name}'s Avatar`}
-                  src={user.profilePicture} // Dynamically fetched profile picture
-                />
-              )}
+        {user ? (
+          <>
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img alt="User Avatar" src={user.profilePicture || "https://i.pravatar.cc/150"} />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              >
+                <li>
+                  <a>{user.name}</a>
+                </li>
+                <li>
+                  <a onClick={handleLogout}>Logout</a>
+                </li>
+              </ul>
             </div>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div>
+          </>
+        ) : (
+          <button onClick={() => navigate("/register")} className="btn btn-primary">
+            Login
+          </button>
+        )}
       </div>
     </nav>
   );
