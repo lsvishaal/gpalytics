@@ -1,30 +1,31 @@
-import React from "react"
-import { motion } from "framer-motion"
-import { BackgroundLines } from "./background-lines"
+import React from "react";
+import { motion } from "framer-motion";
+import { BackgroundLines } from "../components/ui/background-lines";
 
 const LandingPage = () => {
-  // Faster and sharper flicker
+  // Flicker animation
   const flickerAnimation = {
     initial: { opacity: 0 },
     animate: {
-      opacity: [0, 1, 0],
+      opacity: [0, 1, 0.3, 1, 0.6, 1],
       textShadow: [
         "0 0 0px rgba(255, 255, 0, 0)",
+        "0 0 20px rgba(255, 255, 0, 1)",
+        "0 0 5px rgba(255, 255, 0, 0.5)",
+        "0 0 25px rgba(255, 255, 0, 1)",
+        "0 0 10px rgba(255, 255, 0, 0.7)",
         "0 0 30px rgba(255, 255, 0, 1)",
-        "0 0 0px rgba(255, 255, 0, 0)",
       ],
       transition: {
-        duration: 0.3, // Faster flicker
-        ease: "easeOut",
-        repeat: 1,
-        repeatDelay: 0.5,
+        duration: 1.2,
+        ease: "easeInOut",
+        repeat: 0, // Flicker runs once
       },
     },
-    exit: { opacity: 1 },
-  }
+  };
 
-  // Smooth breathing bloom
-  const bloomAnimation = {
+  // Smooth breathing bloom effect
+  const breathingAnimation = {
     animate: {
       textShadow: [
         "0 0 10px rgba(255, 255, 0, 0.5)",
@@ -34,12 +35,12 @@ const LandingPage = () => {
         "0 0 10px rgba(255, 255, 0, 0.5)",
       ],
       transition: {
-        duration: 3,
+        duration: 4, // Slower breathing effect
         ease: "easeInOut",
-        repeat: Infinity,
+        repeat: Infinity, // Continuous breathing
       },
     },
-  }
+  };
 
   const textAnimation = {
     initial: { opacity: 0, y: 20 },
@@ -49,10 +50,10 @@ const LandingPage = () => {
       transition: {
         duration: 0.6,
         ease: "easeOut",
-        delay: 0.6,
+        delay: 1.5, // Starts after flicker
       },
     },
-  }
+  };
 
   const buttonAnimation = {
     initial: { opacity: 0, scale: 0.8 },
@@ -62,10 +63,10 @@ const LandingPage = () => {
       transition: {
         duration: 0.6,
         ease: "easeOut",
-        delay: 0.8,
+        delay: 2,
       },
     },
-  }
+  };
 
   const cardAnimation = {
     initial: { opacity: 0, y: 30 },
@@ -75,10 +76,10 @@ const LandingPage = () => {
       transition: {
         duration: 0.6,
         ease: "easeOut",
-        delay: 1 + i * 0.1,
+        delay: 2.2 + i * 0.1,
       },
     }),
-  }
+  };
 
   return (
     <BackgroundLines
@@ -86,40 +87,41 @@ const LandingPage = () => {
       svgOptions={{ duration: 12 }}
     >
       {/* Hero Section */}
-      <div className="relative z-10 text-center max-w-3xl mx-auto px-4">
+      <div className="relative z-20 text-center max-w-3xl mx-auto px-4">
+        {/* Flicker and Persistent Bloom */}
         <motion.h1
           initial="initial"
           animate="animate"
           exit="exit"
           variants={flickerAnimation}
-          className="text-4xl md:text-5xl font-bold leading-tight mb-6 text-primary"
+          className="text-4xl md:text-5xl font-bold leading-tight mb-6"
         >
           <motion.span
-            variants={bloomAnimation}
+            variants={breathingAnimation}
             animate="animate"
             className="text-primary"
           >
-            know what matters
+            Know what matters
           </motion.span>
         </motion.h1>
+        {/* Description */}
         <motion.p
           {...textAnimation}
           className="text-base md:text-lg text-gray-400 mb-6 px-4 md:px-0"
         >
-          Simplify your academic analysis. Get insights that matter.
+          Process result images to calculate GPAs, track academic performance,
+          and compare insights with peers. Simplify your academic analysis and
+          make informed decisions with GPAlytics.
         </motion.p>
+        {/* Buttons */}
         <motion.div
           {...buttonAnimation}
           className="flex flex-wrap justify-center gap-3 mb-10"
         >
-          <button className="btn btn-primary btn-md px-6 py-2 text-sm">
+          <button className="btn btn-primary px-5 py-2 text-sm">
             Get Started
           </button>
-          <button className="btn btn-outline btn-md px-6 py-2 text-sm">
-            Learn More
-          </button>
         </motion.div>
-
         {/* Info Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
           {[
@@ -141,7 +143,7 @@ const LandingPage = () => {
         </div>
       </div>
     </BackgroundLines>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;

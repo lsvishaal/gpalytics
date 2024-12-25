@@ -1,20 +1,18 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Registration from './components/ui/Registration'
-import SignIn from './components/ui/Signin'
-import Landing from './components/ui/Landing'
-import Navbar from './components/ui/Navbar' // Adjust the import path as needed
+import React from "react"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import SignIn from "./components/ui/Signin"
+import LandingPage from "./pages/Landing"
+import Navbar from "./components/ui/Navbar"
+import AuthPage from "./components/ui/Registration"
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100">
+    <div className="relative min-h-screen bg-grainy bg-cover bg-center">
       <Router>
-        
         <Navbar />
-
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/register" element={<Registration />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/register" element={<AuthPage />} />
           <Route path="/login" element={<SignIn />} />
         </Routes>
       </Router>
