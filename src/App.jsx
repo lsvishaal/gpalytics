@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/Landing";
 import Navbar from "./components/ui/Navbar";
 import AuthPage from "./pages/AuthPage";
-import Error404 from "./pages/error404";
+import Error404 from "./pages/Error404";
 
 const App = () => {
   return (
