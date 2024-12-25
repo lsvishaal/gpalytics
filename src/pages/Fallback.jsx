@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const Error404 = () => {
+const Fallback = () => {
   const navigate = useNavigate();
 
   // Text bounce animation
@@ -93,4 +93,4 @@ const Error404 = () => {
   );
 };
 
-export default Error404;
+export default Fallback;

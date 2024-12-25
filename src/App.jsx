@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/Landing";
 import Navbar from "./components/ui/Navbar";
 import AuthPage from "./pages/AuthPage";
-import Error404 from "./pages/Error404";
+import Fallback from "./pages/Fallback";
+
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<AuthPage />} />
-          <Route path="*" element={<Error404 />} />
+          <Route path="*" element={<Fallback />} />
         </Routes>
       </Router>
     </div>
