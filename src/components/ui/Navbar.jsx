@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 
 const Navbar = () => {
+  const [user, setUser] = useState(null);
+
+  // Simulate fetching user data from authentication or database
+  useEffect(() => {
+    const fetchUserData = async () => {
+      // Replace this mock data with an actual API/database call
+      const mockUser = {
+        userId: "user123",
+        name: "John Doe",
+        profilePicture:
+          "https://i.pravatar.cc/150?img=5", // Random profile picture generator (e.g., i.pravatar.cc)
+      };
+      setUser(mockUser);
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <nav className="flex justify-between items-center bg-neutral text-base-content px-6 py-4 shadow-md">
-      {/* Logo */}
-      <div className="text-xl font-bold flex items-center">
+      {/* Logo and Title */}
+      <a href="/" className="text-xl font-bold flex items-center">
         <span className="mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -22,17 +40,25 @@ const Navbar = () => {
           </svg>
         </span>
         <span className="text-primary">GPA</span>lytics
+      </a>
+
+      {/* Navigation Links */}
+      <div className="hidden md:flex space-x-8">
+        <a href="/" className="hover:text-primary">
+          Home
+        </a>
+        <a href="/register" className="hover:text-primary">
+          RegisterAuthPage
+        </a>
+        <a href="/#community" className="hover:text-primary">
+          Community
+        </a>
+        <a href="/#about" className="hover:text-primary">
+          About
+        </a>
       </div>
 
-      { /* Navigation Links */ }
-        <div className="hidden md:flex space-x-8">
-          <a href="/" className="hover:text-primary">Home</a>
-          <a href="/register" className="hover:text-primary">RegisterAuthPage</a>
-          <a href="/#community" className="hover:text-primary">Community</a>
-          <a href="/#about" className="hover:text-primary">About</a>
-        </div>
-
-        {/* Right-hand Widgets */}
+      {/* Right-hand Widgets */}
       <div className="flex items-center space-x-4">
         {/* Theme Toggle */}
         <button className="btn btn-ghost btn-sm">
@@ -52,49 +78,20 @@ const Navbar = () => {
           </svg>
         </button>
 
-        {/* Cart Dropdown */}
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <div className="indicator">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              <span className="badge badge-sm indicator-item">8</span>
-            </div>
-          </div>
-          <div
-            tabIndex={0}
-            className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
-          >
-            <div className="card-body">
-              <span className="text-lg font-bold">8 Items</span>
-              <span className="text-info">Subtotal: $999</span>
-              <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* User Profile Dropdown */}
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle avatar"
+          >
             <div className="w-10 rounded-full">
-              <img
-                alt="User Avatar"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+              {user && (
+                <img
+                  alt={`${user.name}'s Avatar`}
+                  src={user.profilePicture} // Dynamically fetched profile picture
+                />
+              )}
             </div>
           </div>
           <ul
@@ -117,7 +114,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

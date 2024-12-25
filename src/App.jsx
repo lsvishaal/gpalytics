@@ -1,8 +1,8 @@
-import React from "react"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import LandingPage from "./pages/Landing"
-import Navbar from "./components/ui/Navbar"
-import AuthPage from "./components/ui/Registration"
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/Landing";
+import Navbar from "./components/ui/Navbar";
+import AuthPage from "./components/ui/Registration";
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
         </Routes>
       </Router>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
