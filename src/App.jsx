@@ -6,7 +6,7 @@ import AuthPage from "./components/ui/Registration";
 
 const App = () => {
   return (
-    <div className="relative min-h-screen bg-grainy bg-cover bg-center">
+    <div className="relative min-h-screen bg-grainy bg-cover bg-center selection:bg-yellow-400 selection:text-black">
       <Router>
         <Navbar />
         <Routes>

@@ -1,8 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { BackgroundLines } from "../components/ui/background-lines";
 
 const LandingPage = () => {
+  const navigate = useNavigate(); // Initialize navigate function
+
   // Flicker animation
   const flickerAnimation = {
     initial: { opacity: 0 },
@@ -118,7 +121,10 @@ const LandingPage = () => {
           {...buttonAnimation}
           className="flex flex-wrap justify-center gap-3 mb-10"
         >
-          <button className="btn btn-primary px-5 py-2 text-sm">
+          <button
+            className="btn btn-primary px-5 py-2 text-sm"
+            onClick={() => navigate("/register")} // Navigate to the /register page
+          >
             Get Started
           </button>
         </motion.div>

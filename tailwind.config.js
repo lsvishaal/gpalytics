@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        texturedBlack: "#121212", // Textured black
-        vibrantYellow: "#FFDD00", // Vibrant yellow
+        customYellow: "#FFD700", // Define your custom yellow
+        customBlack: "#1f1b18", // Define your custom black
       },
       backgroundImage: {
         grainy: `
