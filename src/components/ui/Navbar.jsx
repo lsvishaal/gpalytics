@@ -6,16 +6,19 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch user details dynamically
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/protected/get-details", {
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+        const response = await axios.get(`${API_BASE_URL}/protected/get-details`, {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
         setUser(response.data);
       } catch (error) {
-        console.log("Error fetching user data:", error);
+        console.error("Error fetching user data:", error);
         setUser(null);
       }
     };
@@ -23,14 +26,14 @@ const Navbar = () => {
     fetchUserData();
   }, []);
 
-  // Logout functionality
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8000/logout", {}, { withCredentials: true });
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+        const response = await axios.get(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
       setUser(null);
       navigate("/");
     } catch (error) {
-      console.log("Error logging out:", error);
+      console.error("Error logging out:", error);
     }
   };
 
@@ -70,13 +73,12 @@ const Navbar = () => {
         {user ? (
           <>
             <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img alt="User Avatar" src={user.profilePicture || "https://i.pravatar.cc/150"} />
+                  <img
+                    alt="User Avatar"
+                    src={user.profilePicture || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                  />
                 </div>
               </div>
               <ul
@@ -84,7 +86,10 @@ const Navbar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <a>{user.name}</a>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>

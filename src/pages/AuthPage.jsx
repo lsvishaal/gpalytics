@@ -10,7 +10,11 @@ const AuthPage = () => {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
+
+  // Environment-based API URL
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const toggleForm = () => {
     setIsRegister(!isRegister);
@@ -20,6 +24,7 @@ const AuthPage = () => {
       password: "",
       confirmPassword: "",
     });
+    setShowPassword(false);
     setError(null);
   };
 
@@ -31,44 +36,35 @@ const AuthPage = () => {
     e.preventDefault();
     setError(null);
 
-    if (isRegister) {
-      // Registration logic
-      if (formData.password !== formData.confirmPassword) {
-        setError("Passwords do not match");
-        return;
-      }
+    if (isRegister && formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
-      try {
-        const response = await axios.post(
-          "https://gpalytics-backend.onrender.com/register/user",
-          {
-            name: formData.name,
-            regno: formData.regno,
-            password: formData.password,
-          }
-        );
-        alert(response.data.message || "Registered successfully!");
+    try {
+      const endpoint = isRegister
+        ? `${API_BASE_URL}/register/user`
+        : `${API_BASE_URL}/login`;
+      const payload = isRegister
+        ? { name: formData.name, regno: formData.regno, password: formData.password }
+        : { regno: formData.regno, password: formData.password };
+
+      const response = await axios.post(endpoint, payload, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+
+      alert(response.data.message || (isRegister ? "Registered successfully!" : "Login successful!"));
+
+      if (!isRegister) {
+        // Redirect or perform actions after successful login
+        window.location.href = "/";
+      } else {
         toggleForm();
-      } catch (err) {
-        setError(
-          err.response?.data?.detail || "An error occurred during registration"
-        );
       }
-    } else {
-      // Login logic
-      try {
-        const response = await axios.post(
-          "https://gpalytics-backend.onrender.com/login",
-          {
-            regno: formData.regno,
-            password: formData.password,
-          }
-        );
-        alert(response.data.message || "Login successful!");
-        // You can redirect or perform actions after successful login
-      } catch (err) {
-        setError(err.response?.data?.detail || "Invalid login credentials");
-      }
+    } catch (err) {
+      console.error(err.response || err);
+      setError(err.response?.data?.detail || "An error occurred");
     }
   };
 
@@ -89,27 +85,17 @@ const AuthPage = () => {
   };
 
   const staggerContainer = {
-    visible: {
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-    },
+    visible: { transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
   };
 
   const inputVariants = {
     hidden: { opacity: 0, x: -50 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" } },
   };
 
   const buttonVariants = {
     hidden: { opacity: 0, x: 50 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" } },
   };
 
   return (
@@ -153,21 +139,30 @@ const AuthPage = () => {
                   value={formData.regno}
                   onChange={handleInputChange}
                 />
-                <motion.input
-                  variants={inputVariants}
-                  className="w-full mb-3 sm:mb-4 p-2 sm:p-3 bg-[#2a2421] text-[#f4ede6] placeholder:text-xs sm:placeholder:text-sm placeholder-[#d2b49c] border border-[#ffd700] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-opacity-60"
-                  placeholder="Password"
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
+                <div className="relative">
+                  <motion.input
+                    variants={inputVariants}
+                    className="w-full mb-3 sm:mb-4 p-2 sm:p-3 bg-[#2a2421] text-[#f4ede6] placeholder:text-xs sm:placeholder:text-sm placeholder-[#d2b49c] border border-[#ffd700] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-opacity-60"
+                    placeholder="Password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-3 text-[#ffd700]"
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
                 {isRegister && (
                   <motion.input
                     variants={inputVariants}
                     className="w-full mb-3 sm:mb-4 p-2 sm:p-3 bg-[#2a2421] text-[#f4ede6] placeholder:text-xs sm:placeholder:text-sm placeholder-[#d2b49c] border border-[#ffd700] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:ring-opacity-60"
                     placeholder="Confirm Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}

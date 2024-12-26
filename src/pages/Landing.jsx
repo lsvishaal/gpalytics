@@ -1,46 +1,41 @@
+"use client"; // Ensure this component is for client-side rendering
+
 import React from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; // Use the correct `useNavigate` hook
 import { BackgroundLines } from "../components/ui/background-lines";
 
 const LandingPage = () => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate(); // Correctly initialize navigation using `useNavigate`
 
-  // Flicker animation
+  // Animation configurations remain unchanged
   const flickerAnimation = {
     initial: { opacity: 0 },
     animate: {
-      opacity: [0, 1, 0.3, 1, 0.6, 1],
+      opacity: [0, 1, 0.3, 1],
       textShadow: [
         "0 0 0px rgba(255, 255, 0, 0)",
         "0 0 20px rgba(255, 255, 0, 1)",
         "0 0 5px rgba(255, 255, 0, 0.5)",
-        "0 0 25px rgba(255, 255, 0, 1)",
-        "0 0 10px rgba(255, 255, 0, 0.7)",
-        "0 0 30px rgba(255, 255, 0, 1)",
       ],
       transition: {
         duration: 1.2,
         ease: "easeInOut",
-        repeat: 0, // Flicker runs once
+        repeat: 0,
       },
     },
   };
 
-  // Smooth breathing bloom effect
   const breathingAnimation = {
     animate: {
       textShadow: [
         "0 0 10px rgba(255, 255, 0, 0.5)",
         "0 0 20px rgba(255, 255, 0, 0.8)",
-        "0 0 30px rgba(255, 255, 0, 1)",
-        "0 0 20px rgba(255, 255, 0, 0.8)",
-        "0 0 10px rgba(255, 255, 0, 0.5)",
       ],
       transition: {
-        duration: 4, // Slower breathing effect
+        duration: 4,
         ease: "easeInOut",
-        repeat: Infinity, // Continuous breathing
+        repeat: Infinity,
       },
     },
   };
@@ -50,11 +45,7 @@ const LandingPage = () => {
     animate: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        delay: 1.5, // Starts after flicker
-      },
+      transition: { duration: 0.6, ease: "easeOut", delay: 1.5 },
     },
   };
 
@@ -63,11 +54,7 @@ const LandingPage = () => {
     animate: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        delay: 2,
-      },
+      transition: { duration: 0.6, ease: "easeOut", delay: 2 },
     },
   };
 
@@ -76,11 +63,7 @@ const LandingPage = () => {
     animate: (i) => ({
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        delay: 2.2 + i * 0.1,
-      },
+      transition: { duration: 0.6, ease: "easeOut", delay: 2.2 + i * 0.1 },
     }),
   };
 
@@ -89,13 +72,10 @@ const LandingPage = () => {
       className="relative bg-grainy min-h-screen flex items-center justify-center text-base-content"
       svgOptions={{ duration: 12 }}
     >
-      {/* Hero Section */}
       <div className="relative z-20 text-center max-w-3xl mx-auto px-4">
-        {/* Flicker and Persistent Bloom */}
         <motion.h1
           initial="initial"
           animate="animate"
-          exit="exit"
           variants={flickerAnimation}
           className="text-4xl md:text-5xl font-bold leading-tight mb-6"
         >
@@ -107,7 +87,6 @@ const LandingPage = () => {
             Know what matters
           </motion.span>
         </motion.h1>
-        {/* Description */}
         <motion.p
           {...textAnimation}
           className="text-base md:text-lg text-gray-400 mb-6 px-4 md:px-0"
@@ -116,19 +95,17 @@ const LandingPage = () => {
           and compare insights with peers. Simplify your academic analysis and
           make informed decisions with GPAlytics.
         </motion.p>
-        {/* Buttons */}
         <motion.div
           {...buttonAnimation}
           className="flex flex-wrap justify-center gap-3 mb-10"
         >
           <button
             className="btn btn-primary px-5 py-2 text-sm"
-            onClick={() => navigate("/register")} // Navigate to the /register page
+            onClick={() => navigate("/register")}
           >
             Get Started
           </button>
         </motion.div>
-        {/* Info Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
           {[
             { value: "567,234", label: "Total GPAs Calculated" },
