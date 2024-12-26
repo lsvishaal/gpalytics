@@ -6,30 +6,34 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch user data on load
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-        const response = await axios.get(`${API_BASE_URL}/protected/get-details`, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/protected/get-details`,
+          {
+            withCredentials: true,
+          }
+        );
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setUser(null);
+        setUser(null); // Clear user if not authenticated
       }
     };
 
     fetchUserData();
   }, []);
 
+  // Logout handler
   const handleLogout = async () => {
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-        const response = await axios.get(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/logout`,
+        {},
+        { withCredentials: true }
+      );
       setUser(null);
       navigate("/");
     } catch (error) {
@@ -62,43 +66,52 @@ const Navbar = () => {
 
       {/* Links */}
       <div className="hidden md:flex space-x-8">
-        <a href="/" className="hover:text-primary">Home</a>
-        <a href="/register" className="hover:text-primary">Register</a>
-        <a href="/#community" className="hover:text-primary">Community</a>
-        <a href="/#about" className="hover:text-primary">About</a>
+        <a href="/" className="hover:text-primary">
+          Home
+        </a>
+        <a href="/register" className="hover:text-primary">
+          Register
+        </a>
+        <a href="/#community" className="hover:text-primary">
+          Community
+        </a>
+        <a href="/#about" className="hover:text-primary">
+          About
+        </a>
       </div>
 
-      {/* Profile and Logout */}
+      {/* Profile or Login */}
       <div className="flex items-center space-x-4">
         {user ? (
-          <>
-            <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="User Avatar"
-                    src={user.profilePicture || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
-                  />
-                </div>
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+              <div className="w-10 rounded-full">
+                <img
+                  alt="User Avatar"
+                  src={user.profilePicture || "https://i.pravatar.cc/150"}
+                />
               </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <a className="justify-between">
-                    Profile
-                    <span className="badge">New</span>
-                  </a>
-                </li>
-                <li>
-                  <a onClick={handleLogout}>Logout</a>
-                </li>
-              </ul>
             </div>
-          </>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
+              <li>
+                <a className="justify-between">
+                  {user.name || "Profile"}
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a onClick={handleLogout}>Logout</a>
+              </li>
+            </ul>
+          </div>
         ) : (
-          <button onClick={() => navigate("/register")} className="btn btn-primary">
+          <button
+            onClick={() => navigate("/register")}
+            className="btn btn-primary"
+          >
             Login
           </button>
         )}
