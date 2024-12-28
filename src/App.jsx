@@ -4,7 +4,7 @@ import LandingPage from "./pages/Landing";
 import Navbar from "./components/ui/Navbar";
 import AuthPage from "./pages/AuthPage";
 import Fallback from "./pages/Fallback";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedPage from "./pages/ProtectedPage";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,6 +25,15 @@ const App = () => {
     fetchAuthStatus();
   }, []);
 
+  const ProtectedRoute = ({ isAuthenticated, children }) => {
+    // If the user is not authenticated, redirect to the login page
+    if (!isAuthenticated) {
+      return <Navigate to="/register" replace />;
+    }
+  
+    // If authenticated, render the children (protected components)
+    return children;
+  };
   return (
     <div className="relative min-h-screen bg-grainy bg-cover bg-center selection:bg-yellow-400 selection:text-black">
       <Router>

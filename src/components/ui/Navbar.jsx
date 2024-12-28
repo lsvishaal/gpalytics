@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { RandomAvatar } from "react-random-avatars";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
   // Fetch user data on load
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/protected/get-details`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${API_BASE_URL}/protected/get-details`, {
+          withCredentials: true,
+        });
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -29,11 +29,7 @@ const Navbar = () => {
   // Logout handler
   const handleLogout = async () => {
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/logout`,
-        {},
-        { withCredentials: true }
-      );
+      await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
       setUser(null);
       navigate("/");
     } catch (error) {
@@ -86,10 +82,7 @@ const Navbar = () => {
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img
-                  alt="User Avatar"
-                  src={user.profilePicture || "https://i.pravatar.cc/150"}
-                />
+                <RandomAvatar name={user.name || user.regno || "Guest"} size={40} />
               </div>
             </div>
             <ul
@@ -99,7 +92,7 @@ const Navbar = () => {
               <li>
                 <a className="justify-between">
                   {user.name || "Profile"}
-                  <span className="badge">New</span>
+                  <span className="badge">{user.regno}</span>
                 </a>
               </li>
               <li>
