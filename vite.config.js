@@ -16,4 +16,7 @@ export default defineConfig({
     port: 3000, // Development server port
   },
   base: "/", // Ensure correct base path
+  define: {
+    "process.env.VITE_API_BASE_URL": JSON.stringify(process.env.VITE_API_BASE_URL || "http://localhost:8000"),
+  },
 });
