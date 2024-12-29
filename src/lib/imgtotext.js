@@ -55,7 +55,7 @@ async function main() {
     // Replace with your Gemini API key
     const API_KEY = "AIzaSyCfgJjB605M7J9PcPwWjSzMr2P3KY_43JY";
     
-    // The uploaded image should be put in this below image path
+    // The uploaded image should be put in this below image path , need to make it a variable
     const imagePath = '1.jpg';
     
     try {

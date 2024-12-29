@@ -10,7 +10,6 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check session status
     const fetchAuthStatus = async () => {
       try {
         const response = await fetch(
