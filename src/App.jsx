@@ -39,7 +39,11 @@ const App = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" 
+          element={
+            <LandingPage />
+            
+            } />
           <Route path="/register" element={<AuthPage />} />
           <Route
             path="/protected"
