@@ -15,15 +15,18 @@ async function processResultCard(imagePath, apiKey) {
 
         // Prepare the prompt
         const prompt = `Extract all subject details from the results image and create a JSON object with the following structure:
-        * Include a 'semester' field with the semester number
-        * Create a 'subjects' array containing objects for each subject with:
-           * code: Subject code
-           * course_description: Name of the course in capitals
-           * credit: Credit hours (use 0 if not specified)
-           * grade: Letter grade received
-        * Format the JSON with proper indentation for readability
-        
-        Return only the JSON object without any additional text or explanations.`;
+        {
+            "semester": "2", // Extracted from the image
+            "courses": [
+                {
+                    "course_name": "NAME OF COURSE IN CAPITALS",
+                    "course_code": "SUBJECT CODE",
+                    "course_credit": 0, // Default to 0 if not specified
+                    "grade": "GRADE"
+                }
+            ]
+        }
+        Ensure proper indentation and return only the JSON object without any extra text.`;
 
         // Generate response from the model
         const result = await model.generateContent([
@@ -52,19 +55,15 @@ async function processResultCard(imagePath, apiKey) {
 }
 
 async function main() {
-    // Replace with your Gemini API key
+
     const API_KEY = "AIzaSyCfgJjB605M7J9PcPwWjSzMr2P3KY_43JY";
     
-    // The uploaded image should be put in this below image path , need to make it a variable
-    const imagePath = '1.jpg';
+    
+    const imagePath = 'result.jpg'; 
     
     try {
         // Process the image
         const resultJson = await processResultCard(imagePath, API_KEY);
-        
-        // Print the result
-        // console.log("\nExtracted Results:");
-        // console.log(resultJson);
         
         // Output file that will be sent to the backend
         await fs.writeFile('result_card_output.json', resultJson);
