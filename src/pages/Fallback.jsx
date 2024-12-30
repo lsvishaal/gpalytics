@@ -55,7 +55,7 @@ const Fallback = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800">
+    <div className="flex items-center justify-center min-h-screen ">
       <div className="text-center space-y-8">
         {/* 404 Text with glow */}
         <motion.h1
