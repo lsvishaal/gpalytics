@@ -1,14 +1,34 @@
 "use client"; // Ensure this component is for client-side rendering
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom"; // Use the correct `useNavigate` hook
+import { useNavigate } from "react-router-dom";
 import { BackgroundLines } from "../components/ui/background-lines";
+import axios from "axios";
 
 const LandingPage = () => {
-  const navigate = useNavigate(); // Correctly initialize navigation using `useNavigate`
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Animation configurations remain unchanged
+  // Check if the user is logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/protected/get-details`,
+          { withCredentials: true }
+        );
+        if (response.status === 200) {
+          setIsLoggedIn(true);
+        }
+      } catch {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
   const flickerAnimation = {
     initial: { opacity: 0 },
     animate: {
@@ -29,13 +49,14 @@ const LandingPage = () => {
   const breathingAnimation = {
     animate: {
       textShadow: [
-        "0 0 10px rgba(255, 255, 0, 0.5)",
-        "0 0 20px rgba(255, 255, 0, 0.8)",
+        "0 0 10px rgba(255, 255, 0, 0.5)", // Glow state 1
+        "0 0 20px rgba(255, 255, 0, 0.8)", // Glow state 2 (peak)
+        "0 0 10px rgba(255, 255, 0, 0.5)", // Glow state 1 (back to initial)
       ],
       transition: {
-        duration: 4,
-        ease: "easeInOut",
-        repeat: Infinity,
+        duration: 5.5, // 2.75 seconds for "in" and 2.75 seconds for "out"
+        ease: "easeInOut", // Smooth transition
+        repeat: Infinity, // Loop infinitely
       },
     },
   };
@@ -99,19 +120,24 @@ const LandingPage = () => {
           {...buttonAnimation}
           className="flex flex-wrap justify-center gap-3 mb-10"
         >
-          <button
-            className="btn btn-primary px-5 py-2 text-sm"
-            onClick={() => navigate("/register")}
-          >
-            Get Started
-          </button>
-
-          <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-  <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-    Border Magic
-  </span>
-</button>
+          {isLoggedIn ? (
+            <button
+              className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+              onClick={() => navigate("/upload")}
+            >
+              <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+              <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-5 py-2 text-sm font-medium text-white backdrop-blur-3xl">
+                Upload
+              </span>
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary px-5 py-2 text-sm"
+              onClick={() => navigate("/register")}
+            >
+              Get Started
+            </button>
+          )}
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
           {[

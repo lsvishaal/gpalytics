@@ -4,8 +4,13 @@ import PasswordInput from "./PasswordInput"
 import { motion } from "framer-motion"
 
 const RegisterForm = ({ formData, handleInputChange, handleSubmit, showPassword, toggleShowPassword, inputVariants, buttonVariants }) => {
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/ // Minimum 8 characters, at least one uppercase, one number, one special character
+
+  const isPasswordValid = passwordRegex.test(formData.password)
+  const isConfirmPasswordMatch = formData.password === formData.confirmPassword
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* Name Input */}
       <InputField
         name="name"
@@ -13,6 +18,7 @@ const RegisterForm = ({ formData, handleInputChange, handleSubmit, showPassword,
         value={formData.name}
         onChange={handleInputChange}
         variants={inputVariants}
+        className="mt-4"
       />
       {/* Registration Number Input */}
       <InputField
@@ -32,6 +38,12 @@ const RegisterForm = ({ formData, handleInputChange, handleSubmit, showPassword,
         toggleShowPassword={toggleShowPassword}
         variants={inputVariants}
       />
+      {/* Password Requirements Message */}
+      {!isPasswordValid && formData.password && (
+        <p className="text-xs text-red-500">
+          Password must be at least 8 characters, include an uppercase letter, a number, and a special character.
+        </p>
+      )}
       {/* Confirm Password Input */}
       <PasswordInput
         name="confirmPassword"
@@ -42,11 +54,18 @@ const RegisterForm = ({ formData, handleInputChange, handleSubmit, showPassword,
         toggleShowPassword={toggleShowPassword}
         variants={inputVariants}
       />
+      {/* Password Match Message */}
+      {!isConfirmPasswordMatch && formData.confirmPassword && (
+        <p className="text-xs text-red-500">Passwords do not match.</p>
+      )}
       {/* Submit Button */}
       <motion.button
         variants={buttonVariants}
-        className="w-full bg-gradient-to-r from-[#ffd700] to-[#ffcc00] text-[#1f1b18] text-sm sm:text-base font-semibold py-3 rounded-lg hover:scale-105 transition-transform focus:outline-none focus:ring-4 focus:ring-[#ffd700] focus:ring-opacity-60"
+        className={`w-full bg-gradient-to-r from-[#ffd700] to-[#ffcc00] text-[#1f1b18] text-sm sm:text-base font-semibold py-3 rounded-lg hover:scale-105 transition-transform focus:outline-none focus:ring-4 focus:ring-[#ffd700] focus:ring-opacity-60 mt-4 ${
+          !isPasswordValid || !isConfirmPasswordMatch ? "opacity-50 cursor-not-allowed" : ""
+        }`}
         type="submit"
+        disabled={!isPasswordValid || !isConfirmPasswordMatch}
       >
         Sign Up
       </motion.button>

@@ -29,7 +29,6 @@ const AuthPage = () => {
 
     const result = await handleAuth(isRegister, payload)
     if (result.success) {
-      alert(result.message)
       if (isRegister) toggleForm()
       else window.location.href = "/"
     }
