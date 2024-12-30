@@ -17,7 +17,7 @@ const RegisterForm = ({ formData, handleInputChange, handleSubmit, showPassword,
       {/* Registration Number Input */}
       <InputField
         name="regno"
-        placeholder="Reg No (e.g., RA2211027020140)"
+        placeholder="Register No (e.g., RA2211027020140)"
         value={formData.regno}
         onChange={handleInputChange}
         variants={inputVariants}
