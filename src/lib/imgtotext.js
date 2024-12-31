@@ -17,15 +17,15 @@ async function processResultCard(imagePath, apiKey) {
         const prompt = `
             Extract all subject details from the results image and create a JSON object with the following structure:
             {
-                "semester": "2", // Extracted from the image
-                "courses": [
+                "cgpa":[
                     {
                         "course_name": "NAME OF COURSE IN CAPITALS",
                         "course_code": "SUBJECT CODE",
                         "course_credit": 0, // Default to 0 if not specified
                         "grade": "GRADE"
                     }
-                ]
+                ],
+                "semester": 2, // Extracted from the image
             }
             Return only the JSON object without any additional text or explanations.
         `;
