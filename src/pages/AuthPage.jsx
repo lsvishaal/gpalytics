@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useAuth from "../components/hooks/useAuth";
 import LoginForm from "../components/ui/LoginForm";
 import RegisterForm from "../components/ui/RegisterForm";
-import ErrorBanner from "../components/ui/ErrorBanner"; // Import the error banner
+import toast from "react-hot-toast"; // Import toast
 
 const AuthPage = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -15,15 +15,13 @@ const AuthPage = () => {
     batch: "2022", // Default batch value
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(null); // State for managing errors
   const { handleAuth } = useAuth();
 
   // Toggle between Login and Register forms
   const toggleForm = () => {
     setIsRegister(!isRegister);
-    setFormData({ name: "", regno: "", password: "", confirmPassword: "" });
+    setFormData({ name: "", regno: "", password: "", confirmPassword: "", batch: "2022" });
     setShowPassword(false);
-    setError(null); // Clear error when switching forms
   };
 
   // Handle input changes
@@ -31,40 +29,34 @@ const AuthPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = isRegister
-      ? {
-          name: formData.name,
-          regno: formData.regno,
-          password: formData.password,
-          batch: formData.batch, // Include batch in payload
-        }
+      ? { name: formData.name, regno: formData.regno, password: formData.password, batch: formData.batch }
       : { regno: formData.regno, password: formData.password };
-
+  
     try {
       const result = await handleAuth(isRegister, payload);
       if (result.success) {
-        if (isRegister) toggleForm(); // Switch to login on successful registration
-        else window.location.href = "/";
+        if (isRegister) {
+          toast.success("Registration successful! You can now log in.");
+          toggleForm();
+        } else {
+          toast.success("Login successful!");
+          window.location.href = "/";
+        }
       } else {
-        setError(result.message); // Display the error message
+        toast.error(result.message || "An error occurred. Please try again.");
       }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 px-4">
-      {/* Error Banner */}
-      <AnimatePresence>
-        <ErrorBanner
-          error={error}
-          onClose={() => setError(null)} // Clear the error on close
-        />
-      </AnimatePresence>
-
       <AnimatePresence mode="wait">
         <motion.div
           key={isRegister ? "register" : "login"}

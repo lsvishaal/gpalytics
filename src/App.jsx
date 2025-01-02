@@ -6,6 +6,7 @@ import AuthPage from "./pages/AuthPage";
 import Fallback from "./pages/Fallback";
 import ProtectedPage from "./pages/ProtectedPage";
 import FileUploadDemo from "./pages/FileUploadDemo";
+import { Toaster } from "react-hot-toast"; // Import Toaster for global toast notifications
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -33,7 +34,43 @@ const App = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-grainy bg-cover bg-center selection:bg-yellow-400 selection:text-black">
+    <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+      {/* Add Toaster for global toast notifications */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          // Default styles for all toasts
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontSize: "14px",
+          },
+          // Customize success toasts
+          success: {
+            style: {
+              background: "#4caf50",
+              color: "#fff",
+            },
+            iconTheme: {
+              primary: "#4caf50",
+              secondary: "#fff",
+            },
+          },
+          // Customize error toasts
+          error: {
+            style: {
+              background: "#f44336",
+              color: "#fff",
+            },
+            iconTheme: {
+              primary: "#f44336",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
+
+      {/* Router setup */}
       <Router>
         <Navbar />
         <Routes>
@@ -47,14 +84,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          {/* <Route
-            path="/upload"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <FileUploadDemo />
-              </ProtectedRoute>
-            }
-          /> */}
           <Route path="*" element={<Fallback />} />
         </Routes>
       </Router>
