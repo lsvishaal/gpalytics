@@ -1,11 +1,12 @@
-import React, { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import useAuth from "../components/hooks/useAuth"
-import LoginForm from "../components/ui/LoginForm"
-import RegisterForm from "../components/ui/RegisterForm"
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import useAuth from "../components/hooks/useAuth";
+import LoginForm from "../components/ui/LoginForm";
+import RegisterForm from "../components/ui/RegisterForm";
+import ErrorBanner from "../components/ui/ErrorBanner"; // Import the error banner
 
 const AuthPage = () => {
-  const [isRegister, setIsRegister] = useState(false)
+  const [isRegister, setIsRegister] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     regno: "",
@@ -13,35 +14,57 @@ const AuthPage = () => {
     confirmPassword: "",
     batch: "2022", // Default batch value
   });
-  const [showPassword, setShowPassword] = useState(false)
-  const { error, handleAuth } = useAuth()
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null); // State for managing errors
+  const { handleAuth } = useAuth();
 
   // Toggle between Login and Register forms
   const toggleForm = () => {
-    setIsRegister(!isRegister)
-    setFormData({ name: "", regno: "", password: "", confirmPassword: "" })
-    setShowPassword(false)
-  }
+    setIsRegister(!isRegister);
+    setFormData({ name: "", regno: "", password: "", confirmPassword: "" });
+    setShowPassword(false);
+    setError(null); // Clear error when switching forms
+  };
 
   // Handle input changes
-  const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value })
+  const handleInputChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = isRegister
-      ? { name: formData.name, regno: formData.regno, password: formData.password, batch: formData.batch } 
+      ? {
+          name: formData.name,
+          regno: formData.regno,
+          password: formData.password,
+          batch: formData.batch, // Include batch in payload
+        }
       : { regno: formData.regno, password: formData.password };
-  
-    const result = await handleAuth(isRegister, payload);
-    if (result.success) {
-      if (isRegister) toggleForm();
-      else window.location.href = "/";
+
+    try {
+      const result = await handleAuth(isRegister, payload);
+      if (result.success) {
+        if (isRegister) toggleForm(); // Switch to login on successful registration
+        else window.location.href = "/";
+      } else {
+        setError(result.message); // Display the error message
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
     }
   };
-  
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 px-4">
+      {/* Error Banner */}
+      <AnimatePresence>
+        <ErrorBanner
+          error={error}
+          onClose={() => setError(null)} // Clear the error on close
+        />
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={isRegister ? "register" : "login"}
@@ -68,8 +91,14 @@ const AuthPage = () => {
               handleSubmit={handleSubmit}
               showPassword={showPassword}
               toggleShowPassword={() => setShowPassword(!showPassword)}
-              inputVariants={{ hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0 } }}
-              buttonVariants={{ hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 } }}
+              inputVariants={{
+                hidden: { opacity: 0, x: -50 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              buttonVariants={{
+                hidden: { opacity: 0, x: 50 },
+                visible: { opacity: 1, x: 0 },
+              }}
             />
           ) : (
             <LoginForm
@@ -78,8 +107,14 @@ const AuthPage = () => {
               handleSubmit={handleSubmit}
               showPassword={showPassword}
               toggleShowPassword={() => setShowPassword(!showPassword)}
-              inputVariants={{ hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0 } }}
-              buttonVariants={{ hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 } }}
+              inputVariants={{
+                hidden: { opacity: 0, x: -50 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              buttonVariants={{
+                hidden: { opacity: 0, x: 50 },
+                visible: { opacity: 1, x: 0 },
+              }}
             />
           )}
 
@@ -90,13 +125,10 @@ const AuthPage = () => {
           >
             {isRegister ? "Back to Login" : "Register Instead"}
           </motion.button>
-
-          {/* Error Message */}
-          {error && <p className="text-red-500 text-xs mt-4 text-center">{error}</p>}
         </motion.div>
       </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default AuthPage
+export default AuthPage;
