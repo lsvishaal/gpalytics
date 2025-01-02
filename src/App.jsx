@@ -5,8 +5,8 @@ import Navbar from "./components/ui/Navbar";
 import AuthPage from "./pages/AuthPage";
 import Fallback from "./pages/Fallback";
 import ProtectedPage from "./pages/ProtectedPage";
-import FileUploadDemo from "./pages/FileUploadPage";
 import { Toaster } from "react-hot-toast";
+import UploadPage from "./pages/UploadPage";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,6 +80,14 @@ const App = () => {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <ProtectedPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/upload"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <UploadPage />
                 </ProtectedRoute>
               }
             />
