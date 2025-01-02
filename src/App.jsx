@@ -6,7 +6,7 @@ import AuthPage from "./pages/AuthPage";
 import Fallback from "./pages/Fallback";
 import ProtectedPage from "./pages/ProtectedPage";
 import FileUploadDemo from "./pages/FileUploadDemo";
-import { Toaster } from "react-hot-toast"; // Import Toaster for global toast notifications
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,18 +34,17 @@ const App = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
-      {/* Add Toaster for global toast notifications */}
+    <>
+      {/* Toaster mounted globally and only once */}
       <Toaster
         position="top-center"
         toastOptions={{
-          // Default styles for all toasts
           style: {
             background: "#333",
             color: "#fff",
             fontSize: "14px",
+            duration: 8000,
           },
-          // Customize success toasts
           success: {
             style: {
               background: "#4caf50",
@@ -56,7 +55,6 @@ const App = () => {
               secondary: "#fff",
             },
           },
-          // Customize error toasts
           error: {
             style: {
               background: "#f44336",
@@ -69,25 +67,25 @@ const App = () => {
           },
         }}
       />
-
-      {/* Router setup */}
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/register" element={<AuthPage />} />
-          <Route
-            path="/protected"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <ProtectedPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Fallback />} />
-        </Routes>
-      </Router>
-    </div>
+      <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/register" element={<AuthPage />} />
+            <Route
+              path="/protected"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <ProtectedPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Fallback />} />
+          </Routes>
+        </Router>
+      </div>
+    </>
   );
 };
 

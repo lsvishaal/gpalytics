@@ -29,7 +29,6 @@ const AuthPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   // Handle form submission
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = isRegister
@@ -40,11 +39,15 @@ const AuthPage = () => {
       const result = await handleAuth(isRegister, payload);
       if (result.success) {
         if (isRegister) {
-          toast.success("Registration successful! You can now log in.");
-          toggleForm();
+          toast.success("Registration successful! Redirecting to login...");
+          setTimeout(() => {
+            toggleForm(); // Switch to login after a delay
+          }, 3000); // 3 seconds delay
         } else {
-          toast.success("Login successful!");
-          window.location.href = "/";
+          toast.success("Login successful! Redirecting to home...");
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 3000); // 3 seconds delay
         }
       } else {
         toast.error(result.message || "An error occurred. Please try again.");
@@ -53,7 +56,6 @@ const AuthPage = () => {
       toast.error("An unexpected error occurred. Please try again.");
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 px-4">
