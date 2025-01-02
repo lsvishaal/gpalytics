@@ -6,7 +6,13 @@ import RegisterForm from "../components/ui/RegisterForm"
 
 const AuthPage = () => {
   const [isRegister, setIsRegister] = useState(false)
-  const [formData, setFormData] = useState({ name: "", regno: "", password: "", confirmPassword: "" })
+  const [formData, setFormData] = useState({
+    name: "",
+    regno: "",
+    password: "",
+    confirmPassword: "",
+    batch: "2022", // Default batch value
+  });
   const [showPassword, setShowPassword] = useState(false)
   const { error, handleAuth } = useAuth()
 
@@ -22,18 +28,18 @@ const AuthPage = () => {
 
   // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const payload = isRegister
-      ? { name: formData.name, regno: formData.regno, password: formData.password }
-      : { regno: formData.regno, password: formData.password }
-
-    const result = await handleAuth(isRegister, payload)
+      ? { name: formData.name, regno: formData.regno, password: formData.password, batch: formData.batch } 
+      : { regno: formData.regno, password: formData.password };
+  
+    const result = await handleAuth(isRegister, payload);
     if (result.success) {
-      if (isRegister) toggleForm()
-      else window.location.href = "/"
+      if (isRegister) toggleForm();
+      else window.location.href = "/";
     }
-  }
-
+  };
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 px-4">
       <AnimatePresence mode="wait">
