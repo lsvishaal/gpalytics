@@ -37,7 +37,7 @@ const App = () => {
     <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
       {/* Add Toaster for global toast notifications */}
       <Toaster
-        position="top-right"
+        position="top-center"
         toastOptions={{
           // Default styles for all toasts
           style: {
