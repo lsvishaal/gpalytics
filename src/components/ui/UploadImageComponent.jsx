@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
@@ -7,21 +7,48 @@ const UploadImageComponent = () => {
   const [previewURL, setPreviewURL] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Handle image file selection
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && (file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg")) {
-      setImageFile(file);
-      setPreviewURL(URL.createObjectURL(file));
-    } else {
+  const processImage = (file) => {
+    if (!file || !["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
       toast.error("Please upload a valid image file (JPEG, PNG, JPG).");
+      return;
+    }
+    setImageFile(file);
+    setPreviewURL(URL.createObjectURL(file));
+    toast.success("Image loaded successfully!");
+  };
+
+  // Handle image upload (from file input or paste event)
+  const handleImage = (e) => {
+    if (e.type === "change") {
+      // File input
+      const file = e.target.files[0];
+      processImage(file);
+    } else if (e.type === "paste") {
+      // Clipboard paste
+      const items = e.clipboardData.items;
+      for (let item of items) {
+        if (item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          processImage(file);
+          return;
+        }
+      }
+      toast.error("No image found in clipboard.");
     }
   };
 
-  // Confirm and send image to the backend script
+  // Add paste event listener
+  useEffect(() => {
+    window.addEventListener("paste", handleImage);
+    return () => {
+      window.removeEventListener("paste", handleImage);
+    };
+  }, []);
+
+  // Confirm and send image to the backend
   const handleConfirm = async () => {
     if (!imageFile) {
-      toast.error("Please upload an image first!");
+      toast.error("Please upload or paste an image first!");
       return;
     }
 
@@ -53,7 +80,7 @@ const UploadImageComponent = () => {
 
   return (
     <div className="flex flex-col items-center space-y-6 p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg text-white">
-      <h1 className="text-lg font-semibold">Upload Your Image</h1>
+      <h1 className="text-lg font-semibold">Upload or Paste Your Image</h1>
       <p className="text-sm text-gray-400">Supported formats: JPEG, PNG, JPG, etc.</p>
 
       {/* Upload Button */}
@@ -67,7 +94,7 @@ const UploadImageComponent = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={handleImageUpload}
+            onChange={handleImage}
             className="hidden"
           />
         </label>
