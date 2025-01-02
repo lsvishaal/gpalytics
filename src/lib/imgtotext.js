@@ -59,7 +59,8 @@ async function processResultCard(imagePath, apiKey) {
 
 async function main() {
     // Replace with your Gemini Pro API key
-    const API_KEY = 'AIzaSyCfgJjB605M7J9PcPwWjSzMr2P3KY_43JY';
+    require('dotenv').config();
+    const API_KEY = process.env.GEMINI_API_KEY;
 
     // Path to the image
     const imagePath = 'result.jpg';

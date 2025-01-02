@@ -44,7 +44,7 @@ const AuthPage = () => {
             toggleForm(); // Switch to login after a delay
           }, 3000); // 3 seconds delay
         } else {
-          toast.success("Login successful! Redirecting to home...");
+          toast.success("Login successful! Redirecting to home...", { duration: 8000 });
           setTimeout(() => {
             window.location.href = "/";
           }, 3000); // 3 seconds delay

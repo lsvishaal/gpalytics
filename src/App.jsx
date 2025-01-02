@@ -5,7 +5,7 @@ import Navbar from "./components/ui/Navbar";
 import AuthPage from "./pages/AuthPage";
 import Fallback from "./pages/Fallback";
 import ProtectedPage from "./pages/ProtectedPage";
-import FileUploadDemo from "./pages/FileUploadDemo";
+import FileUploadDemo from "./pages/FileUploadPage";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
@@ -44,6 +44,7 @@ const App = () => {
             color: "#fff",
             fontSize: "14px",
             duration: 8000,
+            zIndex: 9999,
           },
           success: {
             style: {
@@ -52,7 +53,7 @@ const App = () => {
             },
             iconTheme: {
               primary: "#4caf50",
-              secondary: "#fff",
+              secondary: "#fff",  
             },
           },
           error: {
@@ -67,6 +68,7 @@ const App = () => {
           },
         }}
       />
+
       <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
         <Router>
           <Navbar />
