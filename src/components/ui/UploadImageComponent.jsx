@@ -7,6 +7,7 @@ const UploadImageComponent = () => {
   const [previewURL, setPreviewURL] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Process and validate image
   const processImage = (file) => {
     if (!file || !["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
       toast.error("Please upload a valid image file (JPEG, PNG, JPG).");
@@ -20,11 +21,9 @@ const UploadImageComponent = () => {
   // Handle image upload (from file input or paste event)
   const handleImage = (e) => {
     if (e.type === "change") {
-      // File input
       const file = e.target.files[0];
       processImage(file);
     } else if (e.type === "paste") {
-      // Clipboard paste
       const items = e.clipboardData.items;
       for (let item of items) {
         if (item.type.startsWith("image/")) {
@@ -57,18 +56,19 @@ const UploadImageComponent = () => {
     formData.append("file", imageFile);
 
     try {
-      const response = await fetch("http://localhost:3001/process-image", {
+      const response = await fetch("https://gpalytics-backend.onrender.com/protected/upload-image", {
         method: "POST",
         body: formData,
+        credentials: "include", // Ensures cookies are sent with the request
       });
 
       const result = await response.json();
       if (response.ok) {
         toast.success("Image processed successfully!");
         console.log("Processed data:", result);
-        // You can now send `result` to your backend (e.g., MongoDB).
+        // Optionally send `result` to another backend or handle it further
       } else {
-        toast.error(result.error || "Error processing image.");
+        toast.error(result.detail || "Error processing image.");
       }
     } catch (error) {
       console.error("Error:", error);
