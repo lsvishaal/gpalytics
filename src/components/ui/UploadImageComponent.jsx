@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import Zoom from "react-medium-image-zoom"; // Import the zoom library
+import "react-medium-image-zoom/dist/styles.css"; // Import the default styles
 
 const UploadImageComponent = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -104,7 +106,14 @@ const UploadImageComponent = () => {
       {previewURL && (
         <div className="flex flex-col items-center">
           <h2 className="text-sm font-medium mb-2">Image Preview:</h2>
-          <img src={previewURL} alt="Preview" className="w-64 h-64 object-cover rounded-md shadow-lg" />
+          <Zoom>
+            <img
+              src={previewURL}
+              alt="Preview"
+              className="w-64 h-64 object-contain rounded-md shadow-lg bg-transparent"
+            />
+          </Zoom>
+          <p className="text-xs text-gray-500 mt-2">Click on the image to zoom.</p>
         </div>
       )}
 
