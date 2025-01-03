@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/Landing";
 import Navbar from "./components/ui/Navbar";
@@ -7,31 +7,45 @@ import Fallback from "./pages/Fallback";
 import ProtectedPage from "./pages/ProtectedPage";
 import { Toaster } from "react-hot-toast";
 import UploadPage from "./pages/UploadPage";
+import Dashboard from "./pages/Dashboard";
+import LoadingScreen from "./components/ui/LoadingScreen";
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAuthStatus = async () => {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/protected/get-details`,
-          { credentials: "include" }
+          { credentials: "include" } // Ensures cookies are sent
         );
-        setIsAuthenticated(response.ok);
-      } catch {
-        setIsAuthenticated(false);
+        console.log(await response.json()); // Log response to debug
+        setIsAuthenticated(response.ok); // True if response is OK
+      } catch (error) {
+        console.error("Failed to fetch auth status:", error);
+        setIsAuthenticated(false); // Default to unauthenticated on error
+      } finally {
+        setLoading(false); // Done loading regardless of success or failure
       }
     };
     fetchAuthStatus();
   }, []);
-
-  const ProtectedRoute = ({ isAuthenticated, children }) => {
+  
+  const ProtectedRoute = ({ isAuthenticated, loading, children }) => {
+    if (loading) {
+      return (
+        <LoadingScreen />
+      ); // Placeholder,  spinner 
+    }
     if (!isAuthenticated) {
       return <Navigate to="/register" replace />;
     }
-    return children;
+    return children; // Render the protected content
   };
+
 
   return (
     <>
@@ -78,7 +92,8 @@ const App = () => {
             <Route
               path="/protected"
               element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}>
+
                   <ProtectedPage />
                 </ProtectedRoute>
               }
@@ -86,8 +101,18 @@ const App = () => {
             <Route
               path="/upload"
               element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}>
+
                   <UploadPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}>
+
+                  <Dashboard />
                 </ProtectedRoute>
               }
             />

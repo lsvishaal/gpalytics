@@ -15,11 +15,11 @@ export default {
         customBlack: "#1f1b18", // Define your custom black
       },
       backgroundImage: {
-        grainy: `
-          radial-gradient(circle, rgba(18,18,18,1) 10%, rgba(28,28,28,1) 40%, rgba(15,15,15,1) 90%),
-          url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAEklEQVR42mNgYGBQDwQXwKkYBQAEgwFczig6lgAAAABJRU5ErkJggg==')
-        `, // A radial gradient with an overlaid noise pattern
+        grainy: 
+          "radial-gradient(circle, rgba(18,18,18,1) 10%, rgba(28,28,28,1) 40%, rgba(15,15,15,1) 90%), " +
+          "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAEklEQVR42mNgYGBQDwQXwKkYBQAEgwFczig6lgAAAABJRU5ErkJggg==')",
       },
+      
       animation: {
         shimmer: "shimmer 2s linear infinite",
       },
