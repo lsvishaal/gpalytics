@@ -98,6 +98,12 @@ const Navbar = () => {
             Register
           </a>
         )}
+         <a
+    onClick={() => navigate("/dashboard")}
+    className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105"
+  >
+    Dashboard
+  </a>
         <a
           onClick={() => navigate("/#collaborators")}
           className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105"
