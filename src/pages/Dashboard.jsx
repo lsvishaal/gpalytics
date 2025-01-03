@@ -1,4 +1,4 @@
-import GradeDistribution from "@/components/ui/GradeDistribution"
+import GradeDistribution from "@/components/ui/SemesterGradeChart"
 
 const Dashboard = () => {
   const grades = [
