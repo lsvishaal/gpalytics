@@ -14,6 +14,7 @@ export default defineConfig({
     sourcemap: true, // Generate sourcemaps for easier debugging in production
   },
   server: {
+    host: "0.0.0.0",
     port: 3000, // Port for the development server
     open: true, // Automatically open the app in the default browser
     cors: true, // Enable Cross-Origin Resource Sharing
