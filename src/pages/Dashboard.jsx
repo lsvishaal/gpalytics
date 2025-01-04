@@ -1,21 +1,20 @@
-import GradeDistribution from "@/components/ui/SemesterGradeChart"
+import SemesterBarChart from "@/components/ui/SemesterBarChart";
+import LineChartComponent from "@/components/ui/LineChartComponent";
+import PieChartComponent from "@/components/ui/PieChartComponent";
 
 const Dashboard = () => {
-  const grades = [
-    { course_name: "FRENCH", grade: "O" },
-    { course_name: "ADVANCED CALCULUS AND COMPLEX ANALYSIS", grade: "O" },
-    { course_name: "CHEMISTRY", grade: "O" },
-    { course_name: "OBJECT ORIENTED DESIGN AND PROGRAMMING", grade: "A+" },
-    { course_name: "ELECTRICAL AND ELECTRONICS ENGINEERING", grade: "O" },
-    { course_name: "CONSTITUTION OF INDIA", grade: "O" },
-    { course_name: "PHYSICAL AND MENTAL HEALTH USING YOGA", grade: "O" },
-    { course_name: "ENGINEERING GRAPHICS AND DESIGN", grade: "O" },
-    { course_name: "GENERAL APTITUDE", grade: "A+" },
-  ];
   return (
-    <div>
-      <GradeDistribution grades={grades} />
+    <div className="space-y-8">
+      {/* Bar Chart */}
+      <SemesterBarChart />
+
+      {/* Pie Chart and Line Chart */}
+      <div className="bg-black grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+        <PieChartComponent />
+        <LineChartComponent />
+      </div>
     </div>
-  )
-}
-export default Dashboard
+  );
+};
+
+export default Dashboard;

@@ -5,3 +5,19 @@
 body {
     @apply bg-grainy bg-cover bg-center text-base-content;
   }
+
+  body {
+    @apply font-content; /* Use Inter for all content by default */
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-title; /* Use Montserrat for all headings */
+  }
+  a {
+    @apply font-content; /* Use Montserrat for all links */
+  }
+  .btn {
+    @apply font-content; /* Use Montserrat for all buttons */
+  }
+  .btn-primary {
+    @apply font-title; /* Use Montserrat for all primary buttons */
+  }

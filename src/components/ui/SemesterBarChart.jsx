@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  BarChart,
+  BarChart as RechartsBarChart,
   Bar,
   XAxis,
   YAxis,
@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 
-const SemesterGradeChart = () => {
+const SemesterBarChart = () => {
   const [data, setData] = useState([]);
   const [selectedSemester, setSelectedSemester] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -77,12 +77,12 @@ const SemesterGradeChart = () => {
 
   return (
     <div className="p-12 bg-black min-h-[600px] rounded-lg shadow-lg">
-      <h2 className="text-4xl font-extrabold mb-6 text-center text-yellow-400">
+      <h2 className="text-4xl font-title font-extrabold mb-6 text-center text-yellow-400">
         Grade Visualization
       </h2>
 
-      {loading && <p className="text-center text-gray-300">Loading data...</p>}
-      {error && <p className="text-red-500 text-center">Error: {error}</p>}
+      {loading && <p className="text-center font-content text-gray-300">Loading data...</p>}
+      {error && <p className="text-red-500 font-content text-center">Error: {error}</p>}
 
       {!loading && !error && (
         <div className="space-y-8">
@@ -104,7 +104,7 @@ const SemesterGradeChart = () => {
           {/* Bar Chart */}
           {chartData.length > 0 ? (
             <div className="flex justify-center">
-              <BarChart
+              <RechartsBarChart
                 width={1200} // Larger width for better visibility
                 height={550}
                 data={chartData}
@@ -148,7 +148,7 @@ const SemesterGradeChart = () => {
                   name="Grade"
                   barSize={70} // Slightly wider bars
                 />
-              </BarChart>
+              </RechartsBarChart>
             </div>
           ) : (
             <p className="text-center text-gray-300">
@@ -161,4 +161,4 @@ const SemesterGradeChart = () => {
   );
 };
 
-export default SemesterGradeChart;
+export default SemesterBarChart;

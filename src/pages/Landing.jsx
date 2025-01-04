@@ -98,7 +98,7 @@ const LandingPage = () => {
           initial="initial"
           animate="animate"
           variants={flickerAnimation}
-          className="text-4xl md:text-5xl font-bold leading-tight mb-6"
+          className="text-4xl md:text-5xl font-title font-bold leading-tight mb-6"
         >
           <motion.span
             variants={breathingAnimation}
@@ -110,7 +110,7 @@ const LandingPage = () => {
         </motion.h1>
         <motion.p
           {...textAnimation}
-          className="text-base md:text-lg text-gray-400 mb-6 px-4 md:px-0"
+          className="text-base md:text-lg font-content text-gray-400 mb-6 px-4 md:px-0"
         >
           Process result images to calculate GPAs, track academic performance,
           and compare insights with peers. Simplify your academic analysis and
@@ -140,10 +140,8 @@ const LandingPage = () => {
           )}
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
-          {[
-            { value: "567,234", label: "Total GPAs Calculated" },
-            { value: "3.4s", label: "Avg Processing Time" },
-          ].map((card, i) => (
+          {[{ value: "567,234", label: "Total GPAs Calculated" },
+            { value: "3.4s", label: "Avg Processing Time" }].map((card, i) => (
             <motion.div
               key={i}
               custom={i}
@@ -152,8 +150,8 @@ const LandingPage = () => {
               animate="animate"
               className="bg-accent text-base-content p-4 rounded-md shadow-md"
             >
-              <h3 className="text-xl font-bold mb-1">{card.value}</h3>
-              <p className="text-xs text-gray-400">{card.label}</p>
+              <h3 className="text-xl font-title font-bold mb-1">{card.value}</h3>
+              <p className="text-xs font-content text-gray-400">{card.label}</p>
             </motion.div>
           ))}
         </div>

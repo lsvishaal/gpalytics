@@ -69,7 +69,7 @@ const AuthPage = () => {
         >
           {/* Heading */}
           <motion.h2
-            className="text-4xl font-bold text-center mb-6 text-[#ffd700] drop-shadow-[0_0_4px_rgba(255,215,0,0.5)]"
+            className="text-4xl font-title font-bold text-center mb-6 text-[#ffd700] drop-shadow-[0_0_4px_rgba(255,215,0,0.5)]"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -115,7 +115,7 @@ const AuthPage = () => {
           {/* Toggle Form Button */}
           <motion.button
             onClick={toggleForm}
-            className="mt-6 text-sm text-center text-[#ffd700] font-medium hover:underline transition-all"
+            className="mt-6 text-sm text-center font-content text-[#ffd700] font-medium hover:underline transition-all"
           >
             {isRegister ? "Back to Login" : "Register Instead"}
           </motion.button>

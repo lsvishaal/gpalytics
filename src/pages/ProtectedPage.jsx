@@ -29,7 +29,7 @@ const ProtectedPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-bold text-red-500">Error</h2>
+          <h2 className="text-xl font-title font-bold text-red-500">Error</h2>
           <p>{error}</p>
         </div>
       </div>

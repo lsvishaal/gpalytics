@@ -10,6 +10,10 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        title: ["Poppins", "sans-serif"], // Modern font for titles
+        content: ["Inter", "sans-serif"], // Clean font for content
+      },
       colors: {
         customYellow: "#FFD700", // Define your custom yellow
         customBlack: "#1f1b18", // Define your custom black

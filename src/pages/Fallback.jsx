@@ -61,7 +61,7 @@ const Fallback = () => {
         <motion.h1
           variants={glowAnimation}
           animate="animate"
-          className="text-6xl sm:text-8xl font-extrabold text-[#ffd700]"
+          className="text-6xl font-title sm:text-8xl font-extrabold text-[#ffd700]"
         >
           404
         </motion.h1>
@@ -71,7 +71,7 @@ const Fallback = () => {
           variants={textVariants}
           initial="hidden"
           animate="visible"
-          className="text-xl sm:text-2xl text-gray-300"
+          className="text-xl font-content sm:text-2xl text-gray-300"
         >
           Oops! The page you’re looking for doesn’t exist.
         </motion.p>
