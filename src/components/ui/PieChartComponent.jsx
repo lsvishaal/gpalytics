@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Pie, PieChart, Tooltip, Cell } from "recharts";
+import ErrorCard from "./ErrorCard";
 
 const PieChartComponent = () => {
   const [data, setData] = useState([]);
@@ -20,6 +21,9 @@ const PieChartComponent = () => {
         });
 
         if (!response.ok) {
+          if (response.status === 500) {
+            throw new Error("Server error. Please upload your data first.");
+          }
           throw new Error(`API Error: ${response.status} - ${response.statusText}`);
         }
 
@@ -51,47 +55,60 @@ const PieChartComponent = () => {
     : [];
 
   return (
-    <div className="p-12 bg-black min-h-[600px] rounded-lg shadow-lg">
-      <h2 className="text-5xl font-title font-extrabold mb-6 text-center text-yellow-400">Grade Distribution</h2>
+    <div className="relative p-6 md:p-12 lg:p-16 bg-black min-h-[600px] rounded-lg shadow-lg">
+      <h2 className="text-5xl font-title font-extrabold mb-6 text-center text-yellow-400">
+        Grade Distribution
+      </h2>
 
-      {loading && <p className="text-center text-gray-300">Loading data...</p>}
-      {error && <p className="text-center text-red-500">Error: {error}</p>}
+      {/* Error overlay */}
+      {(loading || error || !chartData.length) && (
+        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">
+          {loading && <ErrorCard message="Loading data..." />}
+          {error && (
+            <ErrorCard
+              message={error}
+              actionText="Upload Data"
+              onAction={() => window.location.replace("/upload")}
+            />
+          )}
+          {!loading && !error && !chartData.length && (
+            <ErrorCard
+              message="No data available. Please upload your results to visualize them."
+              actionText="Upload Data"
+              onAction={() => window.location.replace("/upload")}
+            />
+          )}
+        </div>
+      )}
 
-      {!loading && !error && (
-        <div className="space-y-8">
-          <div className="flex justify-center">
-            <select
-              className="px-6 py-3 rounded bg-gray-800 text-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
-              value={selectedSemester}
-              onChange={(e) => setSelectedSemester(Number(e.target.value))}
+      {/* Chart */}
+      {!loading && !error && chartData.length > 0 && (
+        <div className="flex justify-center">
+          <PieChart width={400} height={400}>
+            <Pie
+              data={chartData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={150}
+              fill="#8884d8"
+              label
             >
-              {data.map((item) => (
-                <option key={item.semester} value={item.semester}>
-                  Semester {item.semester}
-                </option>
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
-            </select>
-          </div>
-
-          <div className="flex justify-center">
-            <PieChart width={400} height={400}>
-              <Pie
-                data={chartData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={150}
-                fill="#8884d8"
-                label
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </div>
+            </Pie>
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#222",
+                color: "#FFD700",
+                border: "none",
+                borderRadius: "8px",
+              }}
+              itemStyle={{ color: "#FFD700" }}
+            />
+          </PieChart>
         </div>
       )}
     </div>

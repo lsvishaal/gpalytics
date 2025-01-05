@@ -44,18 +44,28 @@ const AuthPage = () => {
             toggleForm(); // Switch to login after a delay
           }, 3000); // 3 seconds delay
         } else {
-          toast.success("Login successful! Redirecting to home...", { duration: 8000 });
+          toast.success("Login successful! Redirecting to home...");
           setTimeout(() => {
             window.location.href = "/";
           }, 3000); // 3 seconds delay
         }
       } else {
-        toast.error(result.message || "An error occurred. Please try again.");
+        // Handle backend error response
+        const errorMessage =
+          result.message ||
+          "An error occurred. Please check your input and try again.";
+        toast.error(errorMessage, { duration: 6000 });
       }
     } catch (error) {
-      toast.error("An unexpected error occurred. Please try again.");
+      // Display generic error message
+      toast.error(
+        "An unexpected error occurred. Please try again later.",
+        { duration: 6000 }
+      );
+      console.error("Error during submission:", error);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 px-4">

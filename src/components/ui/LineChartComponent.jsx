@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
+import ErrorCard from "./ErrorCard";
 
 const LineChartComponent = () => {
   const [data, setData] = useState([]);
@@ -17,11 +18,15 @@ const LineChartComponent = () => {
         });
 
         if (!response.ok) {
+          if (response.status === 500) {
+            throw new Error("Server error. Please upload your data first.");
+          }
           throw new Error(`API Error: ${response.status} - ${response.statusText}`);
         }
 
         const result = await response.json();
-        setData(result["all result"]);
+        const sortedData = result["all result"].sort((a, b) => a.semester - b.semester);
+        setData([{ semester: "0", gpa: 0 }, ...sortedData]);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -38,33 +43,44 @@ const LineChartComponent = () => {
   }));
 
   return (
-    <div className="p-16 bg-black min-h-[800px] rounded-lg shadow-lg">
-      <h2 className="text-5xl font-extrabold mb-10 text-center text-yellow-400">
+    <div className="relative p-6 md:p-12 lg:p-16 bg-black min-h-[600px] rounded-lg shadow-lg">
+      <h2 className="text-5xl font-title font-extrabold mb-6 text-center text-yellow-400">
         CGPA Over Semesters
       </h2>
 
-      {loading && <p className="text-center text-gray-300">Loading data...</p>}
-      {error && <p className="text-center text-red-500">Error: {error}</p>}
+      {/* Error overlay */}
+      {(loading || error || !chartData.length) && (
+        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">
+          {loading && <ErrorCard message="Loading data..." />}
+          {error && (
+            <ErrorCard
+              message={error}
+              actionText="Upload Data"
+              onAction={() => window.location.replace("/upload")}
+            />
+          )}
+          {!loading && !error && !chartData.length && (
+            <ErrorCard
+              message="No data available. Please upload your results to visualize them."
+              actionText="Upload Data"
+              onAction={() => window.location.replace("/upload")}
+            />
+          )}
+        </div>
+      )}
 
-      {!loading && !error && (
+      {/* Chart */}
+      {!loading && !error && chartData.length > 0 && (
         <div className="flex justify-center">
           <LineChart
-            width={1000} // Increased width
-            height={600} // Increased height
+            width={800}
+            height={400}
             data={chartData}
-            margin={{ top: 40, right: 50, left: 50, bottom: 20 }}
+            margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="semester"
-              tick={{ fontSize: 14, fill: "#FFD700" }}
-              tickMargin={10}
-            />
-            <YAxis
-              domain={[7.5, 10]} // Adjusted domain
-              tick={{ fontSize: 14, fill: "#FFD700" }}
-              tickCount={6} // Adds more intermediate ticks
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+            <XAxis dataKey="semester" tick={{ fontSize: 14, fill: "#FFD700" }} />
+            <YAxis domain={[0, 10]} tick={{ fontSize: 14, fill: "#FFD700" }} />
             <Tooltip
               contentStyle={{
                 backgroundColor: "#222",
@@ -74,13 +90,7 @@ const LineChartComponent = () => {
               }}
               itemStyle={{ color: "#FFD700" }}
             />
-            <Line
-              type="monotone"
-              dataKey="gpa"
-              stroke="#FFD700"
-              strokeWidth={3} // Slightly thicker line
-              activeDot={{ r: 10 }} // Larger active dot
-            />
+            <Line type="monotone" dataKey="gpa" stroke="#FFD700" strokeWidth={3} />
           </LineChart>
         </div>
       )}

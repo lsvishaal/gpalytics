@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import ErrorCard from "./ErrorCard";
 
 const SemesterBarChart = () => {
   const [data, setData] = useState([]);
@@ -33,13 +34,15 @@ const SemesterBarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-
+        const API_BASE_URL = "https://gpalytics-backend.onrender.com";
         const response = await fetch(`${API_BASE_URL}/protected/get-sem-details`, {
           credentials: "include",
         });
 
         if (!response.ok) {
+          if (response.status === 500) {
+            throw new Error("Server error. Please upload your data first.");
+          }
           throw new Error(`API Error: ${response.status} - ${response.statusText}`);
         }
 
@@ -69,94 +72,88 @@ const SemesterBarChart = () => {
     filteredData.grades?.map((grade) => ({
       course: grade.course_name
         .split(" ")
-        .filter((word) => word.toLowerCase() !== "and") // Exclude "and"
+        .filter((word) => word.toLowerCase() !== "and")
         .map((word) => word[0].toUpperCase())
         .join("."),
       gradeValue: gradeMapping[grade.grade],
     })) || [];
 
+  if (loading) {
+    return <ErrorCard message="Loading data..." />;
+  }
+
+  if (error) {
+    return (
+      <ErrorCard
+        message={error}
+        actionText="Upload Data"
+        onAction={() => window.location.replace("/upload")}
+      />
+    );
+  }
+
+  if (chartData.length === 0) {
+    return (
+      <ErrorCard
+        message="No data available. Please upload your results to visualize them."
+        actionText="Upload Data"
+        onAction={() => window.location.replace("/upload")}
+      />
+    );
+  }
+
   return (
-    <div className="p-12 bg-black min-h-[600px] rounded-lg shadow-lg">
+    <div className="p-6 md:p-12 lg:p-16 bg-black min-h-[600px] rounded-lg shadow-lg">
       <h2 className="text-4xl font-title font-extrabold mb-6 text-center text-yellow-400">
         Grade Visualization
       </h2>
-
-      {loading && <p className="text-center font-content text-gray-300">Loading data...</p>}
-      {error && <p className="text-red-500 font-content text-center">Error: {error}</p>}
-
-      {!loading && !error && (
-        <div className="space-y-8">
-          {/* Dropdown */}
-          <div className="flex justify-center">
-            <select
-              className="px-6 py-3 rounded bg-gray-800 text-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
-              value={selectedSemester}
-              onChange={(e) => setSelectedSemester(Number(e.target.value))}
-            >
-              {data.map((item) => (
-                <option key={item.semester} value={item.semester}>
-                  Semester {item.semester}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Bar Chart */}
-          {chartData.length > 0 ? (
-            <div className="flex justify-center">
-              <RechartsBarChart
-                width={1200} // Larger width for better visibility
-                height={550}
-                data={chartData}
-                margin={{ top: 20, right: 60, left: 60, bottom: 80 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis
-                  dataKey="course"
-                  tick={{ fontSize: 16, fill: "#FFD700" }}
-                  interval={0}
-                  tickLine={false}
-                />
-                <YAxis
-                  tickFormatter={(value) => reverseGradeMapping[value] || value}
-                  ticks={Object.values(gradeMapping)}
-                  tick={{ fontSize: 16, fill: "#FFD700" }}
-                  domain={[0, 10]}
-                  axisLine={false}
-                />
-                <Tooltip
-                  formatter={(value) =>
-                    Object.keys(gradeMapping).find(
-                      (key) => gradeMapping[key] === value
-                    ) || value
-                  }
-                  contentStyle={{
-                    backgroundColor: "#222",
-                    color: "#FFD700",
-                    border: "none",
-                    borderRadius: "8px",
-                  }}
-                  itemStyle={{
-                    color: "#FFD700",
-                  }}
-                  cursor={{ fill: "transparent" }} // Transparent hover cursor
-                />
-                <Bar
-                  dataKey="gradeValue"
-                  fill="#FFD700" // Yellow bar color
-                  radius={[12, 12, 0, 0]} // Rounded corners
-                  name="Grade"
-                  barSize={70} // Slightly wider bars
-                />
-              </RechartsBarChart>
-            </div>
-          ) : (
-            <p className="text-center text-gray-300">
-              No grades available for this semester.
-            </p>
-          )}
-        </div>
-      )}
+      <div className="flex justify-center">
+        <RechartsBarChart
+          width={800}
+          height={400}
+          data={chartData}
+          margin={{ top: 20, right: 60, left: 60, bottom: 80 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+          <XAxis
+            dataKey="course"
+            tick={{ fontSize: 14, fill: "#FFD700" }}
+            interval={0}
+            tickLine={false}
+          />
+          <YAxis
+            tickFormatter={(value) => reverseGradeMapping[value] || value}
+            ticks={Object.values(gradeMapping)}
+            tick={{ fontSize: 14, fill: "#FFD700" }}
+            domain={[0, 10]}
+            axisLine={false}
+          />
+          <Tooltip
+            formatter={(value) =>
+              Object.keys(gradeMapping).find(
+                (key) => gradeMapping[key] === value
+              ) || value
+            }
+            contentStyle={{
+              backgroundColor: "#222",
+              color: "#FFD700",
+              border: "none",
+              borderRadius: "8px",
+            }}
+            itemStyle={{
+              color: "#FFD700",
+            }}
+            cursor={{ fill: "transparent" }}
+          />
+          <Bar
+            dataKey="gradeValue"
+            fill="#FFD700"
+            radius={[12, 12, 0, 0]}
+            name="Grade"
+            barSize={40}
+          />
+        </RechartsBarChart>
+      </div>
     </div>
   );
 };
