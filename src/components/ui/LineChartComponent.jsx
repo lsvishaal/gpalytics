@@ -44,7 +44,7 @@ const LineChartComponent = () => {
   return (
 
     <div className="relative bg-black p-6 rounded-lg shadow-lg min-h-[400px]">
-  <h2 className="text-2xl md:text-4xl font-extrabold text-yellow-400 text-center mb-4">
+  <h2 className="text-5xlfont-title mt-11 md:text-4xl font-extrabold text-yellow-400 text-center mb-4">
     CGPA Over Semesters
   </h2>
 
@@ -71,7 +71,7 @@ const LineChartComponent = () => {
 
   {/* Chart */}
   {!loading && !error && chartData.length > 0 && (
-    <div className="w-full h-[400px]">
+    <div className="lg:mt-20 mt-10 w-full h-[400px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={chartData}
