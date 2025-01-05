@@ -103,7 +103,7 @@ const Dashboard = () => {
           >
             <PieChartComponent />
             <LineChartComponent />
-            <DynamicGPACard />
+            {/* <DynamicGPACard /> */}
           </motion.div>
         </Suspense>
       </div>
