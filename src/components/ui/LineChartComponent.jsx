@@ -48,6 +48,8 @@ const LineChartComponent = () => {
         CGPA Over Semesters
       </h2>
 
+      
+
       {/* Error overlay */}
       {(loading || error || !chartData.length) && (
         <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">

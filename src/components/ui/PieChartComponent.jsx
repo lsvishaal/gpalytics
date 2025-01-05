@@ -60,26 +60,44 @@ const PieChartComponent = () => {
         Grade Distribution
       </h2>
 
-      {/* Error overlay */}
-      {(loading || error || !chartData.length) && (
-        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">
-          {loading && <ErrorCard message="Loading data..." />}
-          {error && (
-            <ErrorCard
-              message={error}
-              actionText="Upload Data"
-              onAction={() => window.location.replace("/upload")}
-            />
-          )}
-          {!loading && !error && !chartData.length && (
-            <ErrorCard
-              message="No data available. Please upload your results to visualize them."
-              actionText="Upload Data"
-              onAction={() => window.location.replace("/upload")}
-            />
-          )}
-        </div>
-      )}
+ {/* Dropdown */}
+{data.length > 0 && (
+  <div className="flex justify-center mb-4">
+    <select
+      className="px-4 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none"
+      value={selectedSemester || ""}
+      onChange={(e) => setSelectedSemester(Number(e.target.value))}
+    >
+      {data.map((item) => (
+        <option key={item.semester} value={item.semester}>
+          Semester {item.semester}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+
+{/* Error overlay */}
+{(loading || error || !chartData.length) && (
+  <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">
+    {loading && <ErrorCard message="Loading data..." />}
+    {error && (
+      <ErrorCard
+        message={error}
+        actionText="Upload Data"
+        onAction={() => window.location.replace("/upload")}
+      />
+    )}
+    {!loading && !error && !chartData.length && (
+      <ErrorCard
+        message="No data available for this semester."
+        actionText="Upload Data"
+        onAction={() => window.location.replace("/upload")}
+      />
+    )}
+  </div>
+)}
+
 
       {/* Chart */}
       {!loading && !error && chartData.length > 0 && (
