@@ -77,16 +77,16 @@ const SemesterBarChart = () => {
     })) || [];
 
   return (
-    <div className="relative p-4 bg-black rounded-lg shadow-lg min-h-[400px]">
-      <h2 className="text-lg md:text-2xl lg:text-3xl font-title font-extrabold mb-4 text-center text-yellow-400">
+    <div className="relative w-full pb-20 pt-20 my-[25%] bg-black rounded-lg shadow-lg">
+      <h2 className="text-2xl md:text-3xl font-title font-extrabold mb-6 text-center text-yellow-400">
         Grade Visualization
       </h2>
 
       {/* Dropdown */}
       {semesters.length > 0 && (
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-6">
           <select
-            className="px-3 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
+            className="px-4 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
             value={selectedSemester || ""}
             onChange={(e) => setSelectedSemester(Number(e.target.value))}
           >
@@ -101,7 +101,7 @@ const SemesterBarChart = () => {
 
       {/* Error Overlay */}
       {(loading || error || !chartData.length) && (
-        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-4 rounded-lg">
+        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">
           {loading && <ErrorCard message="Loading data..." />}
           {error && (
             <ErrorCard
@@ -122,34 +122,34 @@ const SemesterBarChart = () => {
 
       {/* Chart */}
       {!loading && !error && chartData.length > 0 && (
-        <div className="w-full">
+        <div className="w-full h-[350px] flex justify-center">
           <ResponsiveContainer
-            width="100%"
-            aspect={1.2} // Adjusted for responsiveness
+            width="80%" // Reduced width by 10%
+            height="100%"
           >
             <RechartsBarChart
               data={chartData}
               margin={{
                 top: 10,
-                right: 10,
-                left: 10,
-                bottom: 60, // Spacing for X-axis labels
+                right: 20,
+                left: 20,
+                bottom: 40, // Adjusted for better spacing
               }}
+              barCategoryGap="5%" // Adjust bar spacing
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#333" />
               <XAxis
                 dataKey="course"
-                tick={{ fontSize: 10, fill: "#FFD700" }}
+                tick={{ fontSize: 15, fill: "#FFD700" }} // Increased font size by 3
                 interval={0}
                 tickLine={false}
-                angle={-45} // Rotate labels for better visibility
+                angle={-20} // Reduced angle for better readability
                 textAnchor="end"
-                height={50} // Adjust label spacing
               />
               <YAxis
                 tickFormatter={(value) => reverseGradeMapping[value] || value}
                 ticks={Object.values(gradeMapping)}
-                tick={{ fontSize: 10, fill: "#FFD700" }}
+                tick={{ fontSize: 15, fill: "#FFD700" }} // Increased font size by 3
                 domain={[0, 10]}
                 axisLine={false}
               />
@@ -175,7 +175,7 @@ const SemesterBarChart = () => {
                 fill="#FFD700"
                 radius={[12, 12, 0, 0]}
                 name="Grade"
-                barSize={20} // Adjusted for better visibility on mobile
+                barSize={60} // Increased bar thickness
               />
             </RechartsBarChart>
           </ResponsiveContainer>
