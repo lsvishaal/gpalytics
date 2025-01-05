@@ -77,8 +77,8 @@ const SemesterBarChart = () => {
     })) || [];
 
   return (
-    <div className="relative p-4 bg-black min-h-[400px] rounded-lg shadow-lg">
-      <h2 className="text-xl md:text-3xl font-title font-extrabold mb-4 text-center text-yellow-400">
+    <div className="relative p-4 bg-black rounded-lg shadow-lg min-h-[400px]">
+      <h2 className="text-lg md:text-2xl lg:text-3xl font-title font-extrabold mb-4 text-center text-yellow-400">
         Grade Visualization
       </h2>
 
@@ -86,7 +86,7 @@ const SemesterBarChart = () => {
       {semesters.length > 0 && (
         <div className="flex justify-center mb-4">
           <select
-            className="px-4 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
+            className="px-3 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
             value={selectedSemester || ""}
             onChange={(e) => setSelectedSemester(Number(e.target.value))}
           >
@@ -123,10 +123,18 @@ const SemesterBarChart = () => {
       {/* Chart */}
       {!loading && !error && chartData.length > 0 && (
         <div className="w-full">
-          <ResponsiveContainer width="100%" aspect={2}>
+          <ResponsiveContainer
+            width="100%"
+            aspect={1.2} // Adjusted for responsiveness
+          >
             <RechartsBarChart
               data={chartData}
-              margin={{ top: 20, right: 20, left: 10, bottom: 40 }}
+              margin={{
+                top: 10,
+                right: 10,
+                left: 10,
+                bottom: 60, // Spacing for X-axis labels
+              }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#333" />
               <XAxis
@@ -134,6 +142,9 @@ const SemesterBarChart = () => {
                 tick={{ fontSize: 10, fill: "#FFD700" }}
                 interval={0}
                 tickLine={false}
+                angle={-45} // Rotate labels for better visibility
+                textAnchor="end"
+                height={50} // Adjust label spacing
               />
               <YAxis
                 tickFormatter={(value) => reverseGradeMapping[value] || value}
@@ -164,7 +175,7 @@ const SemesterBarChart = () => {
                 fill="#FFD700"
                 radius={[12, 12, 0, 0]}
                 name="Grade"
-                barSize={20} // Adjust for responsiveness
+                barSize={20} // Adjusted for better visibility on mobile
               />
             </RechartsBarChart>
           </ResponsiveContainer>
