@@ -101,46 +101,70 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Navigation Links (Mobile Menu) */}
+        {/* Navigation Links */}
         <div
-  className={`${
-    menuOpen ? "block" : "hidden"
-  } md:flex md:space-x-6 absolute md:static top-full left-0 w-full ${
-    menuOpen ? "bg-gradient-to-b from-black/90 to-black/70 shadow-lg" : ""
-  } md:bg-transparent md:w-auto md:p-0 p-4 md:shadow-none transition-all`}
->
-  {["Home", "Upload", "Dashboard", "Collaborators", "About"].map((link, index) => (
-    <a
-      key={index}
-      onClick={() => navigate(`/${link.toLowerCase()}`)}
-      className="relative block md:inline-block text-gray-300 px-3 py-2 group cursor-pointer"
-    >
-      {link}
-      <span className="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-300"></span>
-    </a>
-  ))}
-</div>
-
+          className={`${
+            menuOpen ? "block" : "hidden"
+          } md:flex md:space-x-6 absolute md:static top-full left-0 w-full ${
+            menuOpen ? "bg-gradient-to-b from-black/90 to-black/70 shadow-lg" : ""
+          } md:bg-transparent md:w-auto md:p-0 p-4 md:shadow-none transition-all`}
+        >
+          <a
+            onClick={() => navigate("/")}
+            className="relative block md:inline-block text-gray-300 px-3 py-2 group cursor-pointer hover:text-yellow-400 hover:scale-105 transform transition-all duration-300"
+          >
+            Home
+            <span className="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-300"></span>
+          </a>
+          <a
+            onClick={() => navigate("/upload")}
+            className="relative block md:inline-block text-gray-300 px-3 py-2 group cursor-pointer hover:text-yellow-400 hover:scale-105 transform transition-all duration-300"
+          >
+            Upload
+            <span className="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-300"></span>
+          </a>
+          <a
+            onClick={() => navigate("/dashboard")}
+            className="relative block md:inline-block text-gray-300 px-3 py-2 group cursor-pointer hover:text-yellow-400 hover:scale-105 transform transition-all duration-300"
+          >
+            Dashboard
+            <span className="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-300"></span>
+          </a>
+          <a
+            onClick={() => navigate("/collaborators")}
+            className="relative block md:inline-block text-gray-300 px-3 py-2 group cursor-pointer hover:text-yellow-400 hover:scale-105 transform transition-all duration-300"
+          >
+            Collaborators
+            <span className="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-300"></span>
+          </a>
+          <a
+            onClick={() => navigate("/about")}
+            className="relative block md:inline-block text-gray-300 px-3 py-2 group cursor-pointer hover:text-yellow-400 hover:scale-105 transform transition-all duration-300"
+          >
+            About
+            <span className="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-300"></span>
+          </a>
+        </div>
 
         {/* Right Section (Profile or Login) */}
         <div className="flex items-center space-x-4">
           {user ? (
             <div className="relative">
               <button
-                className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-yellow-400 focus:outline-none"
+                className="relative w-12 h-12 rounded-full overflow-hidden border-4 border-yellow-400 focus:outline-none hover:scale-105 transform transition-all duration-300"
                 onClick={() => setMenuOpen(!menuOpen)}
               >
-                <RandomAvatar name={user.name || user.regno || "Guest"} size={40} />
+                <RandomAvatar name={user.name || user.regno || "Guest"} size={48} />
               </button>
               {menuOpen && (
-                <ul className="absolute right-0 mt-2 w-48 bg-transparent shadow-lg rounded-lg">
+                <ul className="absolute right-0 mt-2 w-60 bg-black shadow-lg rounded-lg p-2">
                   <li>
                     <span className="block px-4 py-2 text-gray-300">Hi, {user.name || "User"}</span>
                   </li>
                   <li>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-yellow-400 hover:text-black rounded-lg"
+                      className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-yellow-400 hover:text-black rounded-lg hover:scale-105 transform transition-all duration-300"
                     >
                       Logout
                     </button>
@@ -151,7 +175,7 @@ const Navbar = () => {
           ) : (
             <button
               onClick={() => navigate("/register")}
-              className="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition"
+              className="bg-yellow-400 text-black px-6 py-3 rounded-lg hover:bg-yellow-500 hover:scale-105 transform transition-all duration-300"
             >
               Login
             </button>

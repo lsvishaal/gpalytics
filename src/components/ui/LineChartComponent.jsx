@@ -44,7 +44,7 @@ const LineChartComponent = () => {
   return (
 
     <div className="relative bg-black p-6 rounded-lg shadow-lg min-h-[400px]">
-  <h2 className="text-5xlfont-title mt-11 md:text-4xl font-extrabold text-yellow-400 text-center mb-4">
+  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl  font-title mt-11 font-extrabold text-yellow-400 text-center mb-4">
     CGPA Over Semesters
   </h2>
 

@@ -56,9 +56,10 @@ const PieChartComponent = () => {
 
   return (
     <div className="relative p-6 md:p-12 lg:p-16 bg-black min-h-[600px] rounded-lg shadow-lg">
-      <h2 className="text-5xl font-title font-extrabold mb-6 text-center text-yellow-400">
-        Grade Distribution
-      </h2>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-title font-extrabold mb-6 text-center text-yellow-400">
+  Grade Distribution
+</h2>
+
 
  {/* Dropdown */}
 {data.length > 0 && (
