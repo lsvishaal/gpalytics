@@ -52,134 +52,111 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 bg-gradient-to-b from-black/80 to-black/30 backdrop-blur-md text-base-content px-6 py-4 shadow-md z-50 flex items-center justify-between">
-      {/* Left Section (Hamburger Menu + Logo) */}
-      <div className="flex items-center space-x-4">
-        {/* Hamburger Menu Button */}
-        <button
-          className="block md:hidden text-gray-300 hover:text-primary focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+    <nav className="sticky top-0 z-50 bg-black shadow-md">
+      <div className="container mx-auto flex items-center justify-between px-6 py-4">
+        {/* Left Section (Hamburger Menu + Logo) */}
+        <div className="flex items-center space-x-4">
+          {/* Hamburger Menu Button */}
+          <button
+            className="block md:hidden text-gray-300 hover:text-yellow-400 focus:outline-none transition"
+            onClick={() => setMenuOpen(!menuOpen)}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
-        </button>
-
-        {/* Logo */}
-        <a href="/" className="text-xl font-bold flex items-center space-x-2">
-          <span>
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-primary"
+              className="w-6 h-6"
               fill="none"
-              viewBox="0 0 24 24"
               stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M12 8c2.5 0 4 1.5 4 4s-1.5 4-4 4-4-1.5-4-4 1.5-4 4-4zm0 0C8.5 8 6 6.5 6 4.5S8.5 1 12 1s6 2 6 3.5S15.5 8 12 8z"
-              />
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
             </svg>
-          </span>
-          <span>
-            <span className="text-primary">GPA</span>lytics
-          </span>
-        </a>
-      </div>
-
-      {/* Navigation Links (Mobile Menu) */}
-      <div
-        className={`${
-          menuOpen ? "block" : "hidden"
-        } md:flex md:space-x-6 absolute md:static top-full left-0 w-full bg-gradient-to-b from-black/90 to-black/70 md:bg-transparent md:w-auto md:p-0 p-4 shadow-lg md:shadow-none`}
-      >
-        <a
-          onClick={() => navigate("/")}
-          className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105 block md:inline-block"
-        >
-          Home
-        </a>
-        {user ? (
-          <a
-            onClick={() => navigate("/upload")}
-            className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105 block md:inline-block"
-          >
-            Upload
-          </a>
-        ) : (
-          <a
-            onClick={() => navigate("/register")}
-            className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105 block md:inline-block"
-          >
-            Register
-          </a>
-        )}
-        <a
-          onClick={() => navigate("/dashboard")}
-          className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105 block md:inline-block"
-        >
-          Dashboard
-        </a>
-        <a
-          onClick={() => navigate("/#collaborators")}
-          className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105 block md:inline-block"
-        >
-          Collaborators
-        </a>
-        <a
-          onClick={() => navigate("/#about")}
-          className="cursor-pointer text-gray-300 hover:text-primary transition-all duration-300 hover:underline hover:scale-105 block md:inline-block"
-        >
-          About
-        </a>
-      </div>
-
-      {/* Right Section (Profile or Login) */}
-      <div className="flex items-center space-x-4">
-        {user ? (
-          <div className="relative dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar flex items-center justify-center"
-            >
-              <div className="w-10 h-10 rounded-full overflow-hidden">
-                <RandomAvatar name={user.name || user.regno || "Guest"} size={40} />
-              </div>
-            </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow-lg mt-2 w-48 p-2 z-50"
-            >
-              <li>
-                <a className="justify-between">Hi, {user.name || "User"}</a>
-              </li>
-              <li>
-                <a onClick={handleLogout}>Logout</a>
-              </li>
-            </ul>
-          </div>
-        ) : (
-          <button
-            onClick={() => navigate("/register")}
-            className="btn btn-primary"
-          >
-            Login
           </button>
-        )}
+
+          {/* Logo */}
+          <a href="/" className="text-xl font-bold flex items-center space-x-2 text-gray-200 hover:text-yellow-400 transition">
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 8c2.5 0 4 1.5 4 4s-1.5 4-4 4-4-1.5-4-4 1.5-4 4-4zm0 0C8.5 8 6 6.5 6 4.5S8.5 1 12 1s6 2 6 3.5S15.5 8 12 8z"
+                />
+              </svg>
+            </span>
+            <span>
+              <span className="text-yellow-400">GPA</span>lytics
+            </span>
+          </a>
+        </div>
+
+        {/* Navigation Links (Mobile Menu) */}
+        <div
+  className={`${
+    menuOpen ? "block" : "hidden"
+  } md:flex md:space-x-6 absolute md:static top-full left-0 w-full ${
+    menuOpen ? "bg-gradient-to-b from-black/90 to-black/70 shadow-lg" : ""
+  } md:bg-transparent md:w-auto md:p-0 p-4 md:shadow-none transition-all`}
+>
+  {["Home", "Upload", "Dashboard", "Collaborators", "About"].map((link, index) => (
+    <a
+      key={index}
+      onClick={() => navigate(`/${link.toLowerCase()}`)}
+      className="relative block md:inline-block text-gray-300 px-3 py-2 group cursor-pointer"
+    >
+      {link}
+      <span className="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-300"></span>
+    </a>
+  ))}
+</div>
+
+
+        {/* Right Section (Profile or Login) */}
+        <div className="flex items-center space-x-4">
+          {user ? (
+            <div className="relative">
+              <button
+                className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-yellow-400 focus:outline-none"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                <RandomAvatar name={user.name || user.regno || "Guest"} size={40} />
+              </button>
+              {menuOpen && (
+                <ul className="absolute right-0 mt-2 w-48 bg-transparent shadow-lg rounded-lg">
+                  <li>
+                    <span className="block px-4 py-2 text-gray-300">Hi, {user.name || "User"}</span>
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-yellow-400 hover:text-black rounded-lg"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate("/register")}
+              className="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition"
+            >
+              Login
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );
