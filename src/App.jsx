@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import UploadPage from "./pages/UploadPage";
 import Dashboard from "./pages/Dashboard";
 import LoadingScreen from "./components/ui/LoadingScreen";
+import Collaborators from "./pages/Collaborators";
 
 
 const App = () => {
@@ -89,6 +90,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/register" element={<AuthPage />} />
+            {/* <Route path="/collaborators" element={<Collaborators />} /> */}
             <Route
               path="/protected"
               element={

@@ -87,7 +87,7 @@ const SemesterBarChart = () => {
   const barSize = window.innerWidth < 768 ? 35 : 50; // Thicker bars on desktop
 
   return (
-    <div className="relative w-full my-[25%] bg-black rounded-lg shadow-lg">
+    <div className="relative w-full my-[25%] bg-transparent rounded-lg shadow-lg">
       <h2 className="text-2xl md:text-3xl font-title font-extrabold mb-6 text-center text-yellow-400">
         Grade Visualization
       </h2>
@@ -96,7 +96,7 @@ const SemesterBarChart = () => {
       {semesters.length > 0 && (
         <div className="flex justify-center mb-6">
           <select
-            className="px-4 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
+            className="px-4 py-2 rounded bg-transparent text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
             value={selectedSemester || ""}
             onChange={(e) => setSelectedSemester(Number(e.target.value))}
           >
@@ -111,7 +111,7 @@ const SemesterBarChart = () => {
 
       {/* Error Overlay */}
       {(loading || error || !chartData.length) && (
-        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">
+        <div className="absolute inset-0 bg-transparent flex flex-col items-center justify-center p-6 rounded-lg">
           {loading && <ErrorCard message="Loading data..." />}
           {error && (
             <ErrorCard

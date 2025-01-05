@@ -17,15 +17,15 @@ export default {
       colors: {
         customYellow: "#FFD700", // Define your custom yellow
         customBlack: "#1f1b18", // Define your custom black
+        slate800: "#1e2631", // Slate for shimmer animation
       },
       backgroundImage: {
-        grainy: 
+        grainy:
           "radial-gradient(circle, rgba(18,18,18,1) 10%, rgba(28,28,28,1) 40%, rgba(15,15,15,1) 90%), " +
           "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAEklEQVR42mNgYGBQDwQXwKkYBQAEgwFczig6lgAAAABJRU5ErkJggg==')",
       },
-      
       animation: {
-        shimmer: "shimmer 2s linear infinite",
+        shimmer: "shimmer 2s linear infinite", // Shimmer animation
       },
       keyframes: {
         shimmer: {
@@ -36,6 +36,9 @@ export default {
             backgroundPosition: "-200% 0",
           },
         },
+      },
+      boxShadow: {
+        shimmer: "0px 0px 15px 2px rgba(255, 215, 0, 0.6)", // Optional glow for shimmer
       },
     },
   },

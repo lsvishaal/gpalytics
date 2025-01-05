@@ -28,9 +28,10 @@ const UploadButton = ({ onUpload }) => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("http://localhost:8000/upload", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/protected/upload-image`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -51,7 +52,7 @@ const UploadButton = ({ onUpload }) => {
       <p className="text-gray-500 text-sm">Supported formats: JPG, PNG, JPEG</p>
       <label
         htmlFor="file-upload"
-        className="cursor-pointer bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold py-3 px-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 hover:shadow-xl"
+        className="cursor-pointer inline-flex h-12 animate-shimmer items-center justify-center rounded-xl border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
       >
         Upload Image
       </label>
@@ -68,7 +69,7 @@ const UploadButton = ({ onUpload }) => {
           <p className="text-sm text-gray-600">Verify if the image includes a complete report from ERP.</p>
           <button
             onClick={handleConfirm}
-            className="mt-2 bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition"
+            className="cursor-pointer inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
           >
             Confirm and Process
           </button>

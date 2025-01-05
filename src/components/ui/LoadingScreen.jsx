@@ -16,7 +16,7 @@ const LoadingScreen = () => {
           return 100;
         }
       });
-    }, 1); // Update every 1 ms to reach 100 in 100 ms
+    }, 20); // Update every 20 ms to reach 100 in 2 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -35,7 +35,6 @@ const LoadingScreen = () => {
   if (loadingComplete) {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-black text-white">
-        {/* Your content goes here */}
         <h1>Content Loaded</h1>
       </div>
     );
@@ -51,34 +50,15 @@ const LoadingScreen = () => {
       >
         {percentage}%
       </motion.div>
-      {/* Loader Bar */}
-      <motion.div
-        className="relative mt-4 w-64 h-2 bg-gray-800 rounded-full overflow-hidden"
-        initial={{ width: 0 }}
-        animate={{
-          width: "100%",
-          transition: {
-            duration: 2,
-            ease: "easeInOut",
-            repeat: Infinity,
-            repeatType: "reverse",
-          },
-        }}
-      >
-        <motion.div
-          className="absolute top-0 left-0 h-full bg-yellow-500"
-          animate={{
-            scaleX: [0, 1],
-            transition: {
-              duration: 2,
-              ease: "easeInOut",
-              repeat: Infinity,
-              repeatType: "reverse",
-            },
-          }}
-          style={{ originX: 0 }}
-        />
-      </motion.div>
+
+      {/* DaisyUI Progress Bars */}
+      <div className="space-y-2 mt-8 w-64">
+        <progress
+          className="progress progress-primary"
+          value={percentage}
+          max="100"
+        ></progress>
+      </div>
     </div>
   );
 };
