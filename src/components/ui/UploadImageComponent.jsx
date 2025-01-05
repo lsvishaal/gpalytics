@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import Zoom from "react-medium-image-zoom"; // Import the zoom library
 import "react-medium-image-zoom/dist/styles.css"; // Import the default styles
-import UploadButton from "./UploadButton"; // Import your existing UploadButton component
 
 const UploadImageComponent = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -86,12 +85,22 @@ const UploadImageComponent = () => {
       <h1 className="text-lg font-semibold">Upload or Paste Your Image</h1>
       <p className="text-sm text-gray-400">Supported formats: JPEG, PNG, JPG, etc.</p>
 
-      {/* UploadButton Component */}
-      <UploadButton
-        onUpload={(file) => {
-          processImage(file); // Process the uploaded file
-        }}
-      />
+      {/* Upload Button */}
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex flex-col items-center"
+      >
+        <label className="cursor-pointer bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-4 py-2 rounded-md shadow hover:shadow-lg">
+          Choose Image
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImage}
+            className="hidden"
+          />
+        </label>
+      </motion.div>
 
       {/* Preview */}
       {previewURL && (

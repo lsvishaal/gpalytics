@@ -51,7 +51,7 @@ const LoadingScreen = () => {
         {percentage}%
       </motion.div>
 
-      {/* DaisyUI Progress Bars */}
+      {/* DaisyUI Progress Bar */}
       <div className="space-y-2 mt-8 w-64">
         <progress
           className="progress progress-primary"
