@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "@/components/ui/Loader"; // A simple spinner/loader component
+import DynamicGPACard from "@/components/ui/DynamicGPACard";
 
 // Lazy load the components
 const SemesterBarChart = lazy(() => import("@/components/ui/SemesterBarChart"));
@@ -102,6 +103,7 @@ const Dashboard = () => {
           >
             <PieChartComponent />
             <LineChartComponent />
+            <DynamicGPACard />
           </motion.div>
         </Suspense>
       </div>

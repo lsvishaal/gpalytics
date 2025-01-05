@@ -53,6 +53,7 @@ export default {
           neutral: "#121212",
           "base-100": "#121212",
           "base-content": "#E5E5E5",
+          "error": "#d9004d",
         },
       },
     ],
