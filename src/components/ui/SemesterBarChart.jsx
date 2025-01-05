@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { motion } from "framer-motion";
 import ErrorCard from "./ErrorCard";
 
 const SemesterBarChart = () => {
@@ -76,25 +77,33 @@ const SemesterBarChart = () => {
       gradeValue: gradeMapping[grade.grade],
     })) || [];
 
-  // Function to abbreviate or truncate long course names
   const truncateLabel = (label) => {
     const maxLabelLength = window.innerWidth < 768 ? 8 : 12; // Adjust length based on screen size
     return label.length > maxLabelLength ? `${label.slice(0, maxLabelLength)}...` : label;
   };
 
-  // Dynamically calculate width and bar size
   const chartWidth = window.innerWidth < 768 ? "100%" : "80%"; // Narrower on desktop
   const barSize = window.innerWidth < 768 ? 35 : 50; // Thicker bars on desktop
 
   return (
-    <div className="relative w-full my-[25%] bg-transparent rounded-lg shadow-lg">
-      <h2 className="text-2xl md:text-3xl font-title font-extrabold mb-6 text-center text-yellow-400">
+    <motion.div
+      className="relative w-full my-[25%] bg-transparent rounded-lg p-6 space-y-20"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+    >
+      <h2 className="text-5xl md:text-5xl font-title font-extrabold text-center text-yellow-400">
         Grade Visualization
       </h2>
 
       {/* Dropdown */}
       {semesters.length > 0 && (
-        <div className="flex justify-center mb-6">
+        <motion.div
+          className="flex justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+        >
           <select
             className="px-4 py-2 rounded bg-transparent text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
             value={selectedSemester || ""}
@@ -106,12 +115,17 @@ const SemesterBarChart = () => {
               </option>
             ))}
           </select>
-        </div>
+        </motion.div>
       )}
 
       {/* Error Overlay */}
       {(loading || error || !chartData.length) && (
-        <div className="absolute inset-0 bg-transparent flex flex-col items-center justify-center p-6 rounded-lg">
+        <motion.div
+          className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-6 rounded-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           {loading && <ErrorCard message="Loading data..." />}
           {error && (
             <ErrorCard
@@ -127,42 +141,44 @@ const SemesterBarChart = () => {
               onAction={() => window.location.replace("/upload")}
             />
           )}
-        </div>
+        </motion.div>
       )}
 
       {/* Chart */}
       {!loading && !error && chartData.length > 0 && (
-        <div className="w-full h-[350px] flex justify-center">
-          <ResponsiveContainer
-            width={chartWidth} // Dynamically adjust width
-            height="100%"
-          >
+        <motion.div
+          className="w-full h-[350px] flex justify-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <ResponsiveContainer width={chartWidth} height="100%">
             <RechartsBarChart
               data={chartData}
               margin={{
                 top: 10,
                 right: 20,
                 left: 20,
-                bottom: 70, // Increased bottom margin for labels
+                bottom: 70,
               }}
-              barCategoryGap="2%" // Reduced bar spacing for desktop
+              barCategoryGap="2%"
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#333" />
               <XAxis
                 dataKey="course"
-                tickFormatter={(label) => truncateLabel(label)} // Truncate labels dynamically
+                tickFormatter={(label) => truncateLabel(label)}
                 tick={{
-                  fontSize: window.innerWidth < 768 ? 10 : 15, // Smaller font size on mobile
+                  fontSize: window.innerWidth < 768 ? 10 : 15,
                   fill: "#FFD700",
                 }}
-                interval={0} // Ensure all labels are displayed
+                interval={0}
                 tickLine={false}
-                angle={window.innerWidth < 768 ? -45 : -20} // Adjust label angle for mobile
+                angle={window.innerWidth < 768 ? -45 : -20}
                 textAnchor="end"
               />
               <YAxis
                 tickFormatter={(value) => reverseGradeMapping[value] || value}
-                ticks={Object.values(gradeMapping)}
+                ticks={[0, 5, 6, 7, 8, 9, 10]} // Ensures "O" is included
                 tick={{
                   fontSize: 15,
                   fill: "#FFD700",
@@ -192,13 +208,13 @@ const SemesterBarChart = () => {
                 fill="#FFD700"
                 radius={[12, 12, 0, 0]}
                 name="Grade"
-                barSize={barSize} // Adjust bar thickness dynamically
+                barSize={barSize}
               />
             </RechartsBarChart>
           </ResponsiveContainer>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

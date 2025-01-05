@@ -5,7 +5,6 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 import ErrorCard from "./ErrorCard";
 import { ResponsiveContainer } from "recharts";
 
-
 const LineChartComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,61 +41,63 @@ const LineChartComponent = () => {
   }));
 
   return (
+    <div className="relative bg-transparent p-6 rounded-lg shadow-lg min-h-[400px]">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-title mt-11 font-extrabold text-yellow-400 text-center mb-4">
+        CGPA Over Semesters
+      </h2>
 
-    <div className="relative bg-black p-6 rounded-lg shadow-lg min-h-[400px]">
-  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl  font-title mt-11 font-extrabold text-yellow-400 text-center mb-4">
-    CGPA Over Semesters
-  </h2>
-
-  {/* Error Overlay */}
-  {(loading || error || !chartData.length) && (
-    <div className="absolute inset-0 bg-black/80 flex items-center justify-center rounded-lg">
-      {loading && <ErrorCard message="Loading data..." />}
-      {error && (
-        <ErrorCard
-          message={error}
-          actionText="Upload Data"
-          onAction={() => window.location.replace("/upload")}
-        />
+      {/* Error Overlay */}
+      {(loading || error || !chartData.length) && (
+        <div className="absolute inset-0 bg-transparent/80 flex items-center justify-center rounded-lg">
+          {loading && <ErrorCard message="Loading data..." />}
+          {error && (
+            <ErrorCard
+              message={error}
+              actionText="Upload Data"
+              onAction={() => window.location.replace("/upload")}
+            />
+          )}
+          {!loading && !error && !chartData.length && (
+            <ErrorCard
+              message="No data available. Please upload your results."
+              actionText="Upload Data"
+              onAction={() => window.location.replace("/upload")}
+            />
+          )}
+        </div>
       )}
-      {!loading && !error && !chartData.length && (
-        <ErrorCard
-          message="No data available. Please upload your results."
-          actionText="Upload Data"
-          onAction={() => window.location.replace("/upload")}
-        />
+
+      {/* Chart */}
+      {!loading && !error && chartData.length > 0 && (
+        <div className="lg:mt-20 mt-10 w-full h-[400px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={chartData}
+              margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+              <XAxis dataKey="semester" tick={{ fontSize: 12, fill: "#FFD700" }} />
+              <YAxis domain={[7, 10]} tick={{ fontSize: 12, fill: "#FFD700" }} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#222",
+                  color: "#FFD700",
+                  border: "none",
+                  borderRadius: "8px",
+                }}
+                itemStyle={{ color: "#FFD700" }}
+              />
+              <Line
+                type="monotone"
+                dataKey="gpa"
+                stroke="#FFD700" // Static yellow stroke
+                strokeWidth={3}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       )}
     </div>
-  )}
-
-  {/* Chart */}
-  {!loading && !error && chartData.length > 0 && (
-    <div className="lg:mt-20 mt-10 w-full h-[400px]">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={chartData}
-          margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-          <XAxis dataKey="semester" tick={{ fontSize: 12, fill: "#FFD700" }} />
-          <YAxis domain={[7, 10]} tick={{ fontSize: 12, fill: "#FFD700" }} />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#222",
-              color: "#FFD700",
-              border: "none",
-              borderRadius: "8px",
-            }}
-            itemStyle={{ color: "#FFD700" }}
-          />
-          <Line type="monotone" dataKey="gpa" stroke="#FFD700" strokeWidth={3} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  )}
-</div>
-
-
   );
 };
 

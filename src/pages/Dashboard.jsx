@@ -10,23 +10,74 @@ const PieChartComponent = lazy(() => import("@/components/ui/PieChartComponent")
 const Dashboard = () => {
   return (
     <div className="relative w-full min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
-      {/* Dashboard Title */}
+      {/* Dashboard Title with Bloom Effect */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="py-12"
+        className="py-12 space-y-8"
       >
-        <h1 className="text-4xl md:text-6xl font-extrabold text-yellow-400 text-center tracking-wide">
+        <motion.h1
+          className="text-5xl md:text-6xl font-title font-extrabold text-center relative tracking-wide text-cyan-400"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+        >
           Dashboard
-        </h1>
-        <p className="text-gray-400 text-center text-md md:text-lg mt-4">
+          <span
+            className="absolute inset-0 blur-xl opacity-70 text-cyan-500"
+          >
+            Dashboard
+          </span>
+        </motion.h1>
+        <p className="text-gray-400 text-center text-md md:text-lg">
           Dive into the analytics of your grades with dynamic charts and visualizations!
         </p>
       </motion.div>
 
+      {/* New Section: Performance Overview */}
+      <motion.div
+        className="max-w-4xl mx-auto py-12 px-6 md:px-16 rounded-lg shadow-xl backdrop-blur-lg bg-white/10 border border-white/20"
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        <h2
+          className="text-2xl md:text-3xl font-title font-semibold text-center mb-6 text-cyan-400"
+        >
+          Performance Overview
+        </h2>
+        <div className="flex flex-wrap justify-around mt-6 space-y-4 md:space-y-0">
+          <div className="text-center">
+            <h3
+              className="text-4xl md:text-5xl font-title font-bold text-cyan-400"
+            >
+              3.8
+            </h3>
+            <p className="text-gray-300">Average GPA</p>
+          </div>
+          <div className="text-center">
+            <h3
+              className="text-4xl md:text-5xl font-title font-bold text-cyan-400"
+            >
+              30
+            </h3>
+            <p className="text-gray-300">Total Credits</p>
+          </div>
+          <div className="text-center">
+            <h3
+              className="text-4xl md:text-5xl font-title font-bold text-cyan-400"
+            >
+              O
+            </h3>
+            <p className="text-gray-300">Highest Grade</p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Components Section */}
-      <div className="flex flex-col items-center space-y-16 px-6 md:px-16 py-16">
+      <div className="flex flex-col items-center space-y-32 px-6 md:px-16 py-24">
         {/* Bar Chart Section */}
         <Suspense fallback={<Loader />}>
           <motion.div
@@ -54,18 +105,6 @@ const Dashboard = () => {
           </motion.div>
         </Suspense>
       </div>
-
-      {/* Decorative Elements */}
-      <motion.div
-        className="absolute top-10 left-10 w-20 h-20 bg-yellow-400/20 rounded-full blur-lg animate-pulse"
-        animate={{ x: [0, 10, -10, 0], y: [0, -10, 10, 0] }}
-        transition={{ duration: 6, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute bottom-10 right-10 w-32 h-32 bg-yellow-400/30 rounded-full blur-3xl animate-pulse"
-        animate={{ x: [-10, 0, 10, 0], y: [-10, 10, 0, -10] }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
     </div>
   );
 };
