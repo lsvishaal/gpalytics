@@ -8,6 +8,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import ErrorCard from "./ErrorCard";
 
@@ -76,8 +77,8 @@ const SemesterBarChart = () => {
     })) || [];
 
   return (
-    <div className="relative p-6 md:p-12 lg:p-16 bg-black min-h-[600px] rounded-lg shadow-lg">
-      <h2 className="text-4xl font-title font-extrabold mb-6 text-center text-yellow-400">
+    <div className="relative p-4 bg-black min-h-[400px] rounded-lg shadow-lg">
+      <h2 className="text-xl md:text-3xl font-title font-extrabold mb-4 text-center text-yellow-400">
         Grade Visualization
       </h2>
 
@@ -85,7 +86,7 @@ const SemesterBarChart = () => {
       {semesters.length > 0 && (
         <div className="flex justify-center mb-4">
           <select
-            className="px-4 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none"
+            className="px-4 py-2 rounded bg-black text-yellow-400 border border-yellow-400 focus:outline-none text-sm md:text-base"
             value={selectedSemester || ""}
             onChange={(e) => setSelectedSemester(Number(e.target.value))}
           >
@@ -98,9 +99,9 @@ const SemesterBarChart = () => {
         </div>
       )}
 
-      {/* Error overlay */}
+      {/* Error Overlay */}
       {(loading || error || !chartData.length) && (
-        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 rounded-lg">
+        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-4 rounded-lg">
           {loading && <ErrorCard message="Loading data..." />}
           {error && (
             <ErrorCard
@@ -121,52 +122,52 @@ const SemesterBarChart = () => {
 
       {/* Chart */}
       {!loading && !error && chartData.length > 0 && (
-        <div className="flex justify-center">
-          <RechartsBarChart
-            width={800}
-            height={400}
-            data={chartData}
-            margin={{ top: 20, right: 60, left: 60, bottom: 80 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-            <XAxis
-              dataKey="course"
-              tick={{ fontSize: 14, fill: "#FFD700" }}
-              interval={0}
-              tickLine={false}
-            />
-            <YAxis
-              tickFormatter={(value) => reverseGradeMapping[value] || value}
-              ticks={Object.values(gradeMapping)}
-              tick={{ fontSize: 14, fill: "#FFD700" }}
-              domain={[0, 10]}
-              axisLine={false}
-            />
-            <Tooltip
-              formatter={(value) =>
-                Object.keys(gradeMapping).find(
-                  (key) => gradeMapping[key] === value
-                ) || value
-              }
-              contentStyle={{
-                backgroundColor: "#222",
-                color: "#FFD700",
-                border: "none",
-                borderRadius: "8px",
-              }}
-              itemStyle={{
-                color: "#FFD700",
-              }}
-              cursor={{ fill: "transparent" }}
-            />
-            <Bar
-              dataKey="gradeValue"
-              fill="#FFD700"
-              radius={[12, 12, 0, 0]}
-              name="Grade"
-              barSize={40}
-            />
-          </RechartsBarChart>
+        <div className="w-full">
+          <ResponsiveContainer width="100%" aspect={2}>
+            <RechartsBarChart
+              data={chartData}
+              margin={{ top: 20, right: 20, left: 10, bottom: 40 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+              <XAxis
+                dataKey="course"
+                tick={{ fontSize: 10, fill: "#FFD700" }}
+                interval={0}
+                tickLine={false}
+              />
+              <YAxis
+                tickFormatter={(value) => reverseGradeMapping[value] || value}
+                ticks={Object.values(gradeMapping)}
+                tick={{ fontSize: 10, fill: "#FFD700" }}
+                domain={[0, 10]}
+                axisLine={false}
+              />
+              <Tooltip
+                formatter={(value) =>
+                  Object.keys(gradeMapping).find(
+                    (key) => gradeMapping[key] === value
+                  ) || value
+                }
+                contentStyle={{
+                  backgroundColor: "#222",
+                  color: "#FFD700",
+                  border: "none",
+                  borderRadius: "8px",
+                }}
+                itemStyle={{
+                  color: "#FFD700",
+                }}
+                cursor={{ fill: "transparent" }}
+              />
+              <Bar
+                dataKey="gradeValue"
+                fill="#FFD700"
+                radius={[12, 12, 0, 0]}
+                name="Grade"
+                barSize={20} // Adjust for responsiveness
+              />
+            </RechartsBarChart>
+          </ResponsiveContainer>
         </div>
       )}
     </div>
