@@ -76,8 +76,18 @@ const SemesterBarChart = () => {
       gradeValue: gradeMapping[grade.grade],
     })) || [];
 
+  // Function to abbreviate or truncate long course names
+  const truncateLabel = (label) => {
+    const maxLabelLength = window.innerWidth < 768 ? 8 : 12; // Adjust length based on screen size
+    return label.length > maxLabelLength ? `${label.slice(0, maxLabelLength)}...` : label;
+  };
+
+  // Dynamically calculate width and bar size
+  const chartWidth = window.innerWidth < 768 ? "100%" : "80%"; // Narrower on desktop
+  const barSize = window.innerWidth < 768 ? 35 : 50; // Thicker bars on desktop
+
   return (
-    <div className="relative w-full pb-20 pt-20 my-[25%] bg-black rounded-lg shadow-lg">
+    <div className="relative w-full my-[25%] bg-black rounded-lg shadow-lg">
       <h2 className="text-2xl md:text-3xl font-title font-extrabold mb-6 text-center text-yellow-400">
         Grade Visualization
       </h2>
@@ -124,7 +134,7 @@ const SemesterBarChart = () => {
       {!loading && !error && chartData.length > 0 && (
         <div className="w-full h-[350px] flex justify-center">
           <ResponsiveContainer
-            width="80%" // Reduced width by 10%
+            width={chartWidth} // Dynamically adjust width
             height="100%"
           >
             <RechartsBarChart
@@ -133,23 +143,30 @@ const SemesterBarChart = () => {
                 top: 10,
                 right: 20,
                 left: 20,
-                bottom: 40, // Adjusted for better spacing
+                bottom: 70, // Increased bottom margin for labels
               }}
-              barCategoryGap="5%" // Adjust bar spacing
+              barCategoryGap="2%" // Reduced bar spacing for desktop
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#333" />
               <XAxis
                 dataKey="course"
-                tick={{ fontSize: 15, fill: "#FFD700" }} // Increased font size by 3
-                interval={0}
+                tickFormatter={(label) => truncateLabel(label)} // Truncate labels dynamically
+                tick={{
+                  fontSize: window.innerWidth < 768 ? 10 : 15, // Smaller font size on mobile
+                  fill: "#FFD700",
+                }}
+                interval={0} // Ensure all labels are displayed
                 tickLine={false}
-                angle={-20} // Reduced angle for better readability
+                angle={window.innerWidth < 768 ? -45 : -20} // Adjust label angle for mobile
                 textAnchor="end"
               />
               <YAxis
                 tickFormatter={(value) => reverseGradeMapping[value] || value}
                 ticks={Object.values(gradeMapping)}
-                tick={{ fontSize: 15, fill: "#FFD700" }} // Increased font size by 3
+                tick={{
+                  fontSize: 15,
+                  fill: "#FFD700",
+                }}
                 domain={[0, 10]}
                 axisLine={false}
               />
@@ -175,7 +192,7 @@ const SemesterBarChart = () => {
                 fill="#FFD700"
                 radius={[12, 12, 0, 0]}
                 name="Grade"
-                barSize={60} // Increased bar thickness
+                barSize={barSize} // Adjust bar thickness dynamically
               />
             </RechartsBarChart>
           </ResponsiveContainer>
