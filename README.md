@@ -1,7 +1,7 @@
 
 ---
 
-# **GPAlytics **
+# GPAlytics 
 
 **GPAlytics** is a  application designed to simplify academic analysis. It allows users to calculate GPAs, track academic performance, and gain insights through dynamic data visualization and easy-to-use interfaces. Built using **React**, **Vite**, **Tailwind CSS**, and **Framer Motion**, it offers a modern and responsive experience.
 
