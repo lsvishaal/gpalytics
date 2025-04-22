@@ -105,16 +105,14 @@ const LandingPage = () => {
             animate="animate"
             className="text-primary"
           >
-            Know what matters
+            Your GPA, Visualized
           </motion.span>
         </motion.h1>
         <motion.p
           {...textAnimation}
           className="text-base md:text-lg font-content text-gray-400 mb-6 px-4 md:px-0"
         >
-          Process result images to calculate GPAs, track academic performance,
-          and compare insights with peers. Simplify your academic analysis and
-          make informed decisions with GPAlytics.
+          Upload your result image for instant GPA and progress insights
         </motion.p>
         <motion.div
           {...buttonAnimation}
@@ -127,7 +125,7 @@ const LandingPage = () => {
             >
               <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
               <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-5 py-2 text-sm font-medium text-white backdrop-blur-3xl">
-                Upload
+              Go to Upload
               </span>
             </button>
           ) : (
@@ -135,13 +133,13 @@ const LandingPage = () => {
               className="btn btn-primary px-5 py-2 text-sm"
               onClick={() => navigate("/register")}
             >
-              Get Started
+              Sign Up
             </button>
           )}
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
-          {[{ value: "567,234", label: "Total GPAs Calculated" },
-            { value: "3.4s", label: "Avg Processing Time" }].map((card, i) => (
+          {[{ value: "100+", label: "GPAs Processed" },
+            { value: "< 5s", label: "Processing Time" }].map((card, i) => (
             <motion.div
               key={i}
               custom={i}

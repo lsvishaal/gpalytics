@@ -10,6 +10,7 @@ import UploadPage from "./pages/UploadPage";
 import Dashboard from "./pages/Dashboard";
 import LoadingScreen from "./components/ui/LoadingScreen";
 import Collaborators from "./pages/Collaborators";
+import About from "./pages/About";
 
 
 const App = () => {
@@ -89,6 +90,7 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/About" element={<About />} />
             <Route path="/register" element={<AuthPage />} />
             {/* <Route path="/collaborators" element={<Collaborators />} /> */}
             <Route

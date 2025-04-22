@@ -38,15 +38,20 @@ const SemesterBarChart = () => {
     const fetchData = async () => {
       try {
         const API_BASE_URL = "https://gpalytics-backend.onrender.com";
-        const response = await fetch(`${API_BASE_URL}/protected/get-sem-details`, {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${API_BASE_URL}/protected/get-sem-details`,
+          {
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           if (response.status === 500) {
             throw new Error("Server error. Please upload your data first.");
           }
-          throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+          throw new Error(
+            `API Error: ${response.status} - ${response.statusText}`
+          );
         }
 
         const result = await response.json();
@@ -79,7 +84,9 @@ const SemesterBarChart = () => {
 
   const truncateLabel = (label) => {
     const maxLabelLength = window.innerWidth < 768 ? 8 : 12; // Adjust length based on screen size
-    return label.length > maxLabelLength ? `${label.slice(0, maxLabelLength)}...` : label;
+    return label.length > maxLabelLength
+      ? `${label.slice(0, maxLabelLength)}...`
+      : label;
   };
 
   const chartWidth = window.innerWidth < 768 ? "100%" : "80%"; // Narrower on desktop
@@ -87,7 +94,7 @@ const SemesterBarChart = () => {
 
   return (
     <motion.div
-      className="relative w-full my-[25%] bg-transparent rounded-lg p-6 space-y-20"
+      className="relative w-full bg-transparent rounded-lg p-6 space-y-20"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}

@@ -2,6 +2,12 @@ import React, { Suspense, lazy, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "@/components/ui/Loader"; // A simple spinner/loader component
 import DynamicGPACard from "@/components/ui/DynamicGPACard";
+import {
+  FaCalendarAlt,
+  FaStar,
+  FaLayerGroup,
+  FaChartLine,
+} from "react-icons/fa";
 
 // Lazy load the components
 const SemesterBarChart = lazy(() => import("@/components/ui/SemesterBarChart"));
@@ -110,13 +116,13 @@ const Dashboard = () => {
 
       {/* Performance Overview Section */}
       <motion.div
-        className="max-w-4xl mx-auto py-12 px-6 md:px-16 rounded-lg shadow-xl backdrop-blur-2xl bg-gradient-to-br from-cyan-900/70 via-black/60 to-cyan-800/60 border border-white/20"
-        initial={{ opacity: 0, scale: 0.9 }}
+        className="max-w-4xl mx-auto py-12 px-6 md:px-16 rounded-3xl shadow-2xl backdrop-blur-2xl bg-gradient-to-br from-cyan-900/40 via-slate-900/30 to-cyan-800/30"
+        initial={{ opacity: 0, scale: 0.97 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="text-2xl md:text-3xl font-title font-semibold text-center mb-6 text-cyan-300 drop-shadow-lg">
+        <h2 className="text-2xl md:text-3xl font-title font-semibold text-center mb-10 text-cyan-300 drop-shadow-lg tracking-tight">
           Performance Overview
         </h2>
         {overview.loading ? (
@@ -126,37 +132,74 @@ const Dashboard = () => {
         ) : overview.error ? (
           <div className="text-center text-red-400 py-8">{overview.error}</div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-            <div className="col-span-1 text-center">
-              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
-                {overview.latestCGPA}
-              </h3>
-              <p className="text-cyan-100/80">Latest Semester's GPA</p>
-            </div>
-            <div className="col-span-1 text-center">
-              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
-                {overview.cgpa}
-              </h3>
-              <p className="text-cyan-100/80">CGPA (Overall)</p>
-            </div>
-            <div className="col-span-1 text-center">
-              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
-                {overview.totalCredits}
-              </h3>
-              <p className="text-cyan-100/80">Total Credits</p>
-            </div>
-            <div className="col-span-1 text-center">
-              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
-                {overview.highestGrade}
-              </h3>
-              <p className="text-cyan-100/80">Highest Grade</p>
+          <div className="flex flex-col gap-8 items-center">
+            {/* Main Stat Card */}
+            <motion.div
+              className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-xl rounded-2xl shadow-lg px-10 py-8 mb-2 w-full max-w-md hover:scale-[1.03] transition-transform"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="flex flex-col items-center gap-2 mb-2">
+                <span className="text-2xl md:text-3xl font-bold text-cyan-100 tracking-tight">
+                  Semester {overview.latestSem}
+                </span>
+                <span className="text-lg md:text-2xl font-semibold text-cyan-200">
+                  GPA{" "}
+                  <span className="font-bold text-cyan-100">
+                    {overview.latestCGPA}
+                  </span>
+                </span>
+              </div>
+              <span className="text-cyan-200 text-sm mt-2 tracking-wide">
+                Latest Semester & GPA
+              </span>
+            </motion.div>
+            {/* Other Stats Row */}
+            <div className="flex flex-row flex-wrap gap-6 justify-center w-full">
+              <motion.div
+                className="flex flex-col items-center bg-white/10 backdrop-blur-xl rounded-2xl shadow px-7 py-6 min-w-[160px] hover:scale-[1.04] transition-transform"
+                whileHover={{ scale: 1.06 }}
+              >
+                <FaChartLine className="text-cyan-300 text-2xl mb-1" />
+                <span className="text-2xl font-bold text-cyan-100">
+                  {overview.cgpa}
+                </span>
+                <span className="text-cyan-200 text-xs mt-1">
+                  CGPA (Overall)
+                </span>
+              </motion.div>
+              <motion.div
+                className="flex flex-col items-center bg-white/10 backdrop-blur-xl rounded-2xl shadow px-7 py-6 min-w-[160px] hover:scale-[1.04] transition-transform"
+                whileHover={{ scale: 1.06 }}
+              >
+                <FaLayerGroup className="text-cyan-300 text-2xl mb-1" />
+                <span className="text-2xl font-bold text-cyan-100">
+                  {overview.totalCredits}
+                </span>
+                <span className="text-cyan-200 text-xs mt-1">
+                  Total Credits
+                </span>
+              </motion.div>
+              <motion.div
+                className="flex flex-col items-center bg-white/10 backdrop-blur-xl rounded-2xl shadow px-7 py-6 min-w-[160px] hover:scale-[1.04] transition-transform"
+                whileHover={{ scale: 1.06 }}
+              >
+                <FaStar className="text-cyan-300 text-2xl mb-1" />
+                <span className="text-2xl font-bold text-cyan-100">
+                  {overview.highestGrade}
+                </span>
+                <span className="text-cyan-200 text-xs mt-1">
+                  Highest Grade
+                </span>
+              </motion.div>
             </div>
           </div>
         )}
       </motion.div>
 
       {/* Components Section */}
-      <div className="flex flex-col items-center space-y-32 px-6 md:px-16 py-24">
+      <div className="flex flex-col items-center space-y-16 px-6 md:px-16 py-16">
         {/* Bar Chart Section */}
         <Suspense fallback={<Loader />}>
           <motion.div
@@ -177,7 +220,7 @@ const Dashboard = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="w-full grid grid-cols-1 md:grid-cols-2 gap-16"
+            className="w-full grid grid-cols-1 md:grid-cols-2 gap-8"
           >
             <PieChartComponent />
             <LineChartComponent />
