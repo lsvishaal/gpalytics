@@ -1,14 +1,88 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "@/components/ui/Loader"; // A simple spinner/loader component
 import DynamicGPACard from "@/components/ui/DynamicGPACard";
 
 // Lazy load the components
 const SemesterBarChart = lazy(() => import("@/components/ui/SemesterBarChart"));
-const LineChartComponent = lazy(() => import("@/components/ui/LineChartComponent"));
-const PieChartComponent = lazy(() => import("@/components/ui/PieChartComponent"));
+const LineChartComponent = lazy(() =>
+  import("@/components/ui/LineChartComponent")
+);
+const PieChartComponent = lazy(() =>
+  import("@/components/ui/PieChartComponent")
+);
 
 const Dashboard = () => {
+  // Performance overview state
+  const [overview, setOverview] = useState({
+    latestSem: null,
+    latestCGPA: null,
+    totalCredits: null,
+    highestGrade: null,
+    cgpa: null,
+    loading: true,
+    error: null,
+  });
+
+  useEffect(() => {
+    const fetchOverview = async () => {
+      try {
+        const API_BASE_URL =
+          import.meta.env.VITE_API_BASE_URL ||
+          "https://gpalytics-backend.onrender.com";
+        const response = await fetch(
+          `${API_BASE_URL}/protected/get-sem-details`,
+          {
+            credentials: "include",
+          }
+        );
+        if (!response.ok) throw new Error("Failed to fetch analytics");
+        const result = await response.json();
+        const all = result["all result"] || [];
+        let totalCredits = 0,
+          highestGrade = null;
+        let gradeOrder = ["F", "C", "B", "B+", "A", "A+", "O"];
+        let latestSem = null;
+        let latestCGPA = null;
+        let cgpaSum = 0;
+        all.forEach((sem) => {
+          cgpaSum += sem.gpa || 0;
+          if (Array.isArray(sem.grades)) {
+            sem.grades.forEach((g) => {
+              totalCredits += g.course_credit || 0;
+              if (
+                !highestGrade ||
+                gradeOrder.indexOf(g.grade) > gradeOrder.indexOf(highestGrade)
+              ) {
+                highestGrade = g.grade;
+              }
+            });
+          }
+          if (latestSem === null || sem.semester > latestSem) {
+            latestSem = sem.semester;
+            latestCGPA = sem.gpa;
+          }
+        });
+        setOverview({
+          latestSem: latestSem || "-",
+          latestCGPA: latestCGPA !== null ? latestCGPA.toFixed(2) : "-",
+          totalCredits,
+          highestGrade: highestGrade || "-",
+          cgpa: all.length ? (cgpaSum / all.length).toFixed(2) : "-",
+          loading: false,
+          error: null,
+        });
+      } catch (err) {
+        setOverview((prev) => ({
+          ...prev,
+          loading: false,
+          error: err.message,
+        }));
+      }
+    };
+    fetchOverview();
+  }, []);
+
   return (
     <div className="relative w-full min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
       {/* Dashboard Title with Bloom Effect */}
@@ -25,56 +99,60 @@ const Dashboard = () => {
           transition={{ duration: 1 }}
         >
           Dashboard
-          <span
-            className="absolute inset-0 blur-xl opacity-70 text-cyan-500"
-          >
+          <span className="absolute inset-0 blur-xl opacity-70 text-cyan-500">
             Dashboard
           </span>
         </motion.h1>
         <p className="text-gray-400 text-center text-md md:text-lg">
-          Dive into the analytics of your grades with dynamic charts and visualizations!
+          Grade Analytics
         </p>
       </motion.div>
 
-      {/* New Section: Performance Overview */}
+      {/* Performance Overview Section */}
       <motion.div
-        className="max-w-4xl mx-auto py-12 px-6 md:px-16 rounded-lg shadow-xl backdrop-blur-lg bg-white/10 border border-white/20"
+        className="max-w-4xl mx-auto py-12 px-6 md:px-16 rounded-lg shadow-xl backdrop-blur-2xl bg-gradient-to-br from-cyan-900/70 via-black/60 to-cyan-800/60 border border-white/20"
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <h2
-          className="text-2xl md:text-3xl font-title font-semibold text-center mb-6 text-cyan-400"
-        >
+        <h2 className="text-2xl md:text-3xl font-title font-semibold text-center mb-6 text-cyan-300 drop-shadow-lg">
           Performance Overview
         </h2>
-        <div className="flex flex-wrap justify-around mt-6 space-y-4 md:space-y-0">
-          <div className="text-center">
-            <h3
-              className="text-4xl md:text-5xl font-title font-bold text-cyan-400"
-            >
-              3.8
-            </h3>
-            <p className="text-gray-300">Average GPA</p>
+        {overview.loading ? (
+          <div className="flex justify-center items-center py-8">
+            <Loader />
           </div>
-          <div className="text-center">
-            <h3
-              className="text-4xl md:text-5xl font-title font-bold text-cyan-400"
-            >
-              30
-            </h3>
-            <p className="text-gray-300">Total Credits</p>
+        ) : overview.error ? (
+          <div className="text-center text-red-400 py-8">{overview.error}</div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
+            <div className="col-span-1 text-center">
+              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
+                {overview.latestCGPA}
+              </h3>
+              <p className="text-cyan-100/80">Latest Semester's GPA</p>
+            </div>
+            <div className="col-span-1 text-center">
+              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
+                {overview.cgpa}
+              </h3>
+              <p className="text-cyan-100/80">CGPA (Overall)</p>
+            </div>
+            <div className="col-span-1 text-center">
+              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
+                {overview.totalCredits}
+              </h3>
+              <p className="text-cyan-100/80">Total Credits</p>
+            </div>
+            <div className="col-span-1 text-center">
+              <h3 className="text-2xl md:text-3xl font-title font-bold text-cyan-200 bg-cyan-900/60 rounded-xl py-2 px-1 shadow-lg">
+                {overview.highestGrade}
+              </h3>
+              <p className="text-cyan-100/80">Highest Grade</p>
+            </div>
           </div>
-          <div className="text-center">
-            <h3
-              className="text-4xl md:text-5xl font-title font-bold text-cyan-400"
-            >
-              O
-            </h3>
-            <p className="text-gray-300">Highest Grade</p>
-          </div>
-        </div>
+        )}
       </motion.div>
 
       {/* Components Section */}

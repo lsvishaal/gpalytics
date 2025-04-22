@@ -118,6 +118,15 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/collaborators"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}>
+
+                  <Collaborators />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<Fallback />} />
           </Routes>
         </Router>

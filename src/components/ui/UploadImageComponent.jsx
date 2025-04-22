@@ -4,14 +4,17 @@ import toast from "react-hot-toast";
 import Zoom from "react-medium-image-zoom"; // Import the zoom library
 import "react-medium-image-zoom/dist/styles.css"; // Import the default styles
 
-const UploadImageComponent = () => {
+const UploadImageComponent = ({ onSuccess }) => {
   const [imageFile, setImageFile] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Process and validate image
   const processImage = (file) => {
-    if (!file || !["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
+    if (
+      !file ||
+      !["image/jpeg", "image/png", "image/jpg"].includes(file.type)
+    ) {
       toast.error("Please upload a valid image file (JPEG, PNG, JPG).");
       return;
     }
@@ -58,16 +61,19 @@ const UploadImageComponent = () => {
     formData.append("file", imageFile);
 
     try {
-      const response = await fetch("https://gpalytics-backend.onrender.com/protected/upload-image", {
-        method: "POST",
-        body: formData,
-        credentials: "include", // Ensures cookies are sent with the request
-      });
+      const response = await fetch(
+        "https://gpalytics-backend.onrender.com/protected/upload-image",
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include", // Ensures cookies are sent with the request
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
         toast.success("Image processed successfully!");
-        console.log("Processed data:", result);
+        if (onSuccess) onSuccess(); // Call the redirect handler after toast
         // Optionally send `result` to another backend or handle it further
       } else {
         toast.error(result.detail || "Error processing image.");
@@ -83,7 +89,9 @@ const UploadImageComponent = () => {
   return (
     <div className="flex flex-col items-center space-y-6 p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg text-white">
       <h1 className="text-lg font-semibold">Upload or Paste Your Image</h1>
-      <p className="text-sm text-gray-400">Supported formats: JPEG, PNG, JPG, etc.</p>
+      <p className="text-sm text-gray-400">
+        Supported formats: JPEG, PNG, JPG, etc.
+      </p>
 
       {/* Upload Button */}
       <motion.div
@@ -113,7 +121,9 @@ const UploadImageComponent = () => {
               className="w-64 h-64 object-contain rounded-md shadow-lg bg-transparent"
             />
           </Zoom>
-          <p className="text-xs text-gray-500 mt-2">Click on the image to zoom.</p>
+          <p className="text-xs text-gray-500 mt-2">
+            Click on the image to zoom.
+          </p>
         </div>
       )}
 
